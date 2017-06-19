@@ -1,0 +1,13 @@
+from $DOCKER_REPO/node:8.0.0
+
+COPY package.json .
+RUN npm install
+
+COPY config.js config.js
+# COPY DatastoreUtil.js .
+# COPY BigqueryArchive.js .
+COPY schema schema
+COPY JsonArchive.js .
+COPY server.js .
+
+CMD [ "npm", "start" ]
