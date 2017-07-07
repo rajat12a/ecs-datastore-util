@@ -1,0 +1,26 @@
+{
+    "family": "$APP_NAME",
+    "networkMode": "bridge",
+    "containerDefinitions": [
+        {
+            "name": "$APP_NAME",
+            "image": "$DOCKER_REPO/$APP_NAME:$APP_VERSION",
+            "cpu": 128,
+            "memoryReservation": 512,
+            "essential": true,
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "$STAGE-$APP_NAME",
+                    "awslogs-region": "ap-southeast-1"
+                }
+            }
+        }
+    ],
+    "placementConstraints": [
+        {
+            "expression": "attribute:instance-category-devops == true",
+            "type": "memberOf"
+        }
+    ]
+}
