@@ -61,17 +61,18 @@ class JsonArchive {
   readFromFile() {
 
     var entities = {};
+    var lastValue = '';
 
     readline.createInterface({
       input: fs.createReadStream( this.kind, { encoding: 'utf8' } )
     }).on( 'line', ( line ) => {
       var json = JSON.parse( line );
       entities[ json[ this.schema.primaryKey ] ] = json;
-      var sortValue = new Date( json[ this.config.sortBy ] );
-      if( this.config.lastValue < sortValue )
-        this.config.lastValue = sortValue;
+      if( lastValue < json[ this.config.sortBy ] )
+        lastValue = json[ this.config.sortBy ];
     }).on( 'close', () => {
-      console.log( `${ this.kind }: ${ Object.keys( entities ).length } entities read from file system.` )
+      console.log( `${ this.kind }: ${ Object.keys( entities ).length } entities read from file system.` );
+      this.config.lastValue = new Date( lastValue );
       this.updateFromDataStore( entities );
     });
 
@@ -91,9 +92,15 @@ class JsonArchive {
         this.callback( null, 0 );
       } else {
         updates.data.forEach( ( json ) => {
+          // HACK
           if( this.kind == 'PRATILIPI' ) {
             json.TAG_IDS = JSON.stringify( json.TAG_IDS );
             json.SUGGESTED_TAGS = JSON.stringify( json.SUGGESTED_TAGS );
+          }
+          // HACK
+          if( this.kind == 'USER_PRATILIPI' ) {
+            json[ 'REVIEW_LENGTH' ] = json.REVIEW == null ? 0 : json.REVIEW.length;
+            delete( json.REVIEW );
           }
           if( this.config.lastValue < json[ this.config.sortBy ] )
             this.config.lastValue = json[ this.config.sortBy ];
@@ -154,7 +161,7 @@ class JsonArchive {
     // Must wait for some time before making a copy as the object is not immediately available
     setTimeout( () => {
       storage.file( this.kind ).copy( this.kind + '/' + timeStampStr );
-    }, 15000 ); // 15 seconds
+    }, 60000 ); // 60 seconds
 
 
     this.callback( null, updateCount );
