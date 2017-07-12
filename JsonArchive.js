@@ -49,7 +49,7 @@ class JsonArchive {
 
           });
         } else {
-          this.updateFromDataStore( {}, '' );
+          this.updateFromDataStore( {} );
         }
       });
 
@@ -173,4 +173,3 @@ class JsonArchive {
 
 
 module.exports = JsonArchive;
-

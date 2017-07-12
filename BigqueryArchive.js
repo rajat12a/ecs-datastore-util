@@ -22,7 +22,7 @@ class BigqueryArchive {
     datastore = datastoreClient({ projectId:process.env.GCP_PROJ_ID, kind:this.kind, schema:this.schema });
 
     if( this.config.lastValue != null ) {
-      this.updateBigqueryFromDatastore();
+      this.updateBigqueryFromDatastore({});
     } else {
       this.findAndUpdateLastValue();
     }
@@ -36,10 +36,10 @@ class BigqueryArchive {
         console.log( `${ this.kind }: ${ Object.keys( rows ).length } entities read from Bigquery.` );
         if( rows && rows[0] && rows[0].value ) {
           var lastValue = rows[0].value.value;
-          console.log(`${ this.kind }: lastValue queried from Bigquery is ${ lastValue } having type `+ typeof lastValue);
           this.config.lastValue = new Date([ lastValue.slice(0, 10), 'T', lastValue.slice( 11 ), 'Z' ].join(''));
+          console.log(`${ this.kind }: lastValue queried from Bigquery is ${ this.config.lastValue } having type `+ typeof this.config.lastValue);
         }
-        this.updateBigqueryFromDatastore();
+        this.updateBigqueryFromDatastore(rows);
       } else {
         console.error(`${ this.kind }: Error while reading from Bigquery.`);
         this.callback( err, null );
@@ -47,7 +47,7 @@ class BigqueryArchive {
     });
   }
 
-  updateBigqueryFromDatastore() {
+  updateBigqueryFromDatastore(entities) {
 
     var filter = [];
     if( this.config.lastValue !== '' ) {
