@@ -33,7 +33,7 @@ class BigqueryArchive {
     var queryStr = `SELECT MAX(${ this.config.sortBy }) as value FROM [${ this.kind }]`;
     bigquery.query( queryStr, (err,rows) => {
       if( !err ) {
-        console.log(`${ this.kind }: ${ rows }`);
+        console.log(`${ this.kind }: `+JSON.stringify(rows) );
         console.log( `${ this.kind }: ${ Object.keys( rows ).length } entities read from Bigquery.` );
         if( rows && rows[0] && rows[0].value ) {
           var lastValue = rows[0].value.value;
