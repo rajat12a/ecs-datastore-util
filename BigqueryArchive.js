@@ -22,7 +22,7 @@ class BigqueryArchive {
     datastore = datastoreClient({ projectId:process.env.GCP_PROJ_ID, kind:this.kind, schema:this.schema });
 
     if( this.config.lastValue != null ) {
-      this.updateBigqueryFromDatastore({});
+      this.updateBigqueryFromDatastore();
     } else {
       this.findAndUpdateLastValue();
     }
@@ -33,7 +33,7 @@ class BigqueryArchive {
     var queryStr = `SELECT MAX(${ this.config.sortBy }) as value FROM [${ this.kind }]`;
     bigquery.query( queryStr, (err,rows) => {
       if( !err ) {
-        console.log(`${ this.kind }: `+JSON.stringify(rows) );
+        console.log(`${ this.kind }: from  BigQuery read `+JSON.stringify(rows) );
         console.log( `${ this.kind }: ${ Object.keys( rows ).length } entities read from Bigquery.` );
         if( rows && rows[0] && rows[0].value ) {
           var lastValue = rows[0].value.value;
@@ -48,9 +48,10 @@ class BigqueryArchive {
     });
   }
 
-  updateBigqueryFromDatastore(entities) {
+  updateBigqueryFromDatastore() {
 
     var filter = [];
+    var entities={};
     if( this.config.lastValue !== '' ) {
       filter.push([ this.config.sortBy, '>', new Date( this.config.lastValue ) ]);
     }
@@ -67,6 +68,7 @@ class BigqueryArchive {
           }
           entities[ json[ this.schema.primaryKey ] ] = json;
         });
+        console.log(`${ this.kind }: From Datastore Read new Entities Object Created.`+JSON.stringify(entities));
         this.insertInBigQuery( entities, updates.data.length );
       }
     }).catch( ( err ) => {
@@ -87,7 +89,7 @@ class BigqueryArchive {
 
 
     var rows = [];
-    entities.forEach( ( entity ) => {
+    Object.values(entities).forEach( ( entity ) => {
       var insertId;
       insertId = entity[ this.schema.primaryKey ];
       rows.push( { insertId:insertId, json:entity } );
