@@ -20,7 +20,7 @@ const archiveConfig = {
   PRATILIPI:      { sortBy:'_TIMESTAMP_', minValue:new Date(0), batchSize:1000, minUpdate: 100, timeInt:60, minTimeInt: 60, maxTimeInt: 900, nextRun:0, boost: 10 },
   USER_AUTHOR:    { sortBy:'FOLLOW_DATE', minValue:new Date(0), batchSize:1000, minUpdate:1000, timeInt:60, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:100 },
   USER_PRATILIPI: {
-      sortBy:'_TIMESTAMP_', minValue:new Date(0), maxValue:new Date(1488306600000),
+      sortBy:'_TIMESTAMP_', minValue:new Date(0), maxValue:new Date(1490985000000),
       batchSize:1000, minUpdate:1000,
       timeInt:60, minTimeInt: 15, maxTimeInt:3600, nextRun:0, boost:100 }
 };
