@@ -61,18 +61,18 @@ class JsonArchive {
   readFromFile() {
 
     var entities = {};
-    var lastValue = '';
+    var minValue = '';
 
     readline.createInterface({
       input: fs.createReadStream( this.kind, { encoding: 'utf8' } )
     }).on( 'line', ( line ) => {
       var json = JSON.parse( line );
       entities[ json[ this.schema.primaryKey ] ] = json;
-      if( lastValue < json[ this.config.sortBy ] )
-        lastValue = json[ this.config.sortBy ];
+      if( minValue < json[ this.config.sortBy ] )
+        minValue = json[ this.config.sortBy ];
     }).on( 'close', () => {
       console.log( `${ this.kind }: ${ Object.keys( entities ).length } entities read from file system.` );
-      this.config.lastValue = new Date( lastValue );
+      this.config.minValue = new Date( minValue );
       this.updateFromDataStore( entities );
     });
 
@@ -82,8 +82,9 @@ class JsonArchive {
   updateFromDataStore( entities ) {
 
     var filter = [];
-    if( this.config.lastValue !== '' )
-      filter.push([ this.config.sortBy, '>', new Date( this.config.lastValue ) ]);
+    filter.push([ this.config.sortBy, '>=', new Date( this.config.minValue ) ]);
+    if( this.config.maxValue != null )
+      filter.push([ this.config.sortBy, '<', new Date( this.config.maxValue ) ]);
     var orderBy = [ this.config.sortBy ];
 
     datastore.query( filter, null, null, this.config.batchSize, orderBy ).then( ( updates ) => {
@@ -102,8 +103,8 @@ class JsonArchive {
             json[ 'REVIEW_LENGTH' ] = json.REVIEW == null ? 0 : json.REVIEW.length;
             delete( json.REVIEW );
           }
-          if( this.config.lastValue < json[ this.config.sortBy ] )
-            this.config.lastValue = json[ this.config.sortBy ];
+          if( this.config.minValue < json[ this.config.sortBy ] )
+            this.config.minValue = json[ this.config.sortBy ];
           entities[ json[ this.schema.primaryKey ] ] = json;
         });
         this.writeToFile( entities, updates.data.length );

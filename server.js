@@ -10,10 +10,13 @@ const jsonArchive = new JsonArchive();
 
 
 const archiveConfig = {
-  AUTHOR:         { sortBy:'_TIMESTAMP_', lastValue:new Date(0), batchSize:1000, minUpdate: 100, timeInt:60, minTimeInt: 60, maxTimeInt: 900, nextRun:0, boost: 10 },
-  PRATILIPI:      { sortBy:'_TIMESTAMP_', lastValue:new Date(0), batchSize:1000, minUpdate: 100, timeInt:60, minTimeInt: 60, maxTimeInt: 900, nextRun:0, boost: 10 },
-  USER_AUTHOR:    { sortBy:'FOLLOW_DATE', lastValue:new Date(0), batchSize:1000, minUpdate:1000, timeInt:60, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:100 },
-  USER_PRATILIPI: { sortBy:'_TIMESTAMP_', lastValue:new Date(0), batchSize:1000, minUpdate:1000, timeInt:60, minTimeInt: 15, maxTimeInt:3600, nextRun:0, boost:100 }
+  AUTHOR:         { sortBy:'_TIMESTAMP_', minValue:new Date(0), batchSize:1000, minUpdate: 100, timeInt:60, minTimeInt: 60, maxTimeInt: 900, nextRun:0, boost: 10 },
+  PRATILIPI:      { sortBy:'_TIMESTAMP_', minValue:new Date(0), batchSize:1000, minUpdate: 100, timeInt:60, minTimeInt: 60, maxTimeInt: 900, nextRun:0, boost: 10 },
+  USER_AUTHOR:    { sortBy:'FOLLOW_DATE', minValue:new Date(0), batchSize:1000, minUpdate:1000, timeInt:60, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:100 },
+  USER_PRATILIPI: {
+      sortBy:'_TIMESTAMP_', minValue:new Date(0), maxValue:new Date(1451586600000),
+      batchSize:1000, minUpdate:1000,
+      timeInt:60, minTimeInt: 15, maxTimeInt:3600, nextRun:0, boost:100 }
 };
 
 
