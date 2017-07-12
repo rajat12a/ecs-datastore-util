@@ -40,7 +40,7 @@ class BigqueryArchive {
           this.config.lastValue = new Date([ lastValue.slice(0, 10), 'T', lastValue.slice( 11 ), 'Z' ].join(''));
           console.log(`${ this.kind }: lastValue queried from Bigquery is ${ this.config.lastValue } having type `+ typeof this.config.lastValue);
         }
-        this.updateBigqueryFromDatastore(rows);
+        this.updateBigqueryFromDatastore();
       } else {
         console.error(`${ this.kind }: Error while reading from Bigquery.`);
         this.callback( err, null );
@@ -52,7 +52,8 @@ class BigqueryArchive {
 
     var filter = [];
     var entities={};
-    if( this.config.lastValue !== '' ) {
+    console.log(`${ this.kind }: lastValue to be queried in datastore is ${ this.config.lastValue } having type `+ typeof this.config.lastValue);
+    if( this.config.lastValue != null ) {
       filter.push([ this.config.sortBy, '>', new Date( this.config.lastValue ) ]);
     }
     var orderBy = [ this.config.sortBy ];
@@ -62,14 +63,8 @@ class BigqueryArchive {
       if( updates.data.length === 0 ) {
         this.callback( null, 0 );
       } else {
-        updates.data.forEach( ( json ) => {
-          if( this.config.lastValue < json[ this.config.sortBy ] ) {
-            this.config.lastValue = json[ this.config.sortBy ];
-          }
-          entities[ json[ this.schema.primaryKey ] ] = json;
-        });
-        console.log(`${ this.kind }: From Datastore Read new Entities Object Created.`+JSON.stringify(entities));
-        this.insertInBigQuery( entities, updates.data.length );
+        console.log(`${ this.kind }: From Datastore Entities queried.`+JSON.stringify(updates.data));
+        this.insertInBigQuery( updates.data, updates.data.length );
       }
     }).catch( ( err ) => {
       console.error(`${ this.kind }: Error while querying on datastore.`);
@@ -89,7 +84,7 @@ class BigqueryArchive {
 
 
     var rows = [];
-    Object.values(entities).forEach( ( entity ) => {
+    entities.forEach( ( entity ) => {
       var insertId;
       insertId = entity[ this.schema.primaryKey ];
       rows.push( { insertId:insertId, json:entity } );
@@ -113,7 +108,7 @@ class BigqueryArchive {
         this.callback( err );
       } else {
         this.config.lastValue = new Date(entities[ entities.length -1 ][ this.config.sortBy ]);
-        console.log( `${ rows.length } ${ this.kind } records inserted !` );
+        console.log( `${ this.kind }: ${ rows.length } records inserted !` );
         this.callback( null, rows.length );
       }
     });
