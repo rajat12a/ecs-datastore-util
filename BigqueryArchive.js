@@ -40,6 +40,7 @@ class BigqueryArchive {
         }
         this.updateBigqueryFromDatastore();
       } else {
+        console.error(`${ this.kind }: Error while reading from Bigquery.`);
         this.callback( err, null );
       }
     });
@@ -67,6 +68,7 @@ class BigqueryArchive {
         this.insertInBigQuery( entities, updates.data.length );
       }
     }).catch( ( err ) => {
+      console.error(`${ this.kind }: Error while querying on datastore.`);
       this.callback( err, null );
     });
 
@@ -91,6 +93,7 @@ class BigqueryArchive {
 
     bigquery.table( this.kind ).insert( rows, { raw: true }, ( err, apiResponse ) => {
       if(err) {
+        console.error(`${ this.kind }: Error while inserting In BigQuery`);
         if( err.name === 'PartialFailureError' ) {
           err.errors.forEach( ( err1 ) => {
             err1.errors.forEach( ( err2 ) => {
