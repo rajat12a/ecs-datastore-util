@@ -26,7 +26,7 @@ const archiveConfig = {
 };
 
 const bigqueryConfig = {
-  AUDIT_LOG: { sortBy:'CREATION_DATE', lastValue: null, batchSize:1000, minUpdate:100, timeInt:60, minTimeInt:60, maxTimeInt:900 }
+  AUDIT_LOG: { sortBy:'CREATION_DATE', lastValue:null, batchSize:1000, minUpdate:100, timeInt:60, minTimeInt:60, maxTimeInt:900, nextRun:0 }
 };
 
 (function run() {
@@ -63,27 +63,33 @@ const bigqueryConfig = {
 
 })();
 
-Object.keys( bigqueryConfig ).forEach( ( kind ) => {
+( function bigQueryRun() {
+  var kinds = Object.keys( bigqueryConfig );
+  for( var i = 0; i < kinds.length; i++ ) {
 
-  var config = bigqueryConfig[ kind ];
+    var kind = kinds[ i ];
+    var config = bigqueryConfig[ kind ];
 
-  var callback = ( err, updateCount ) => {
-    if( err ) {
-      console.error( String( err ) );
-    } else {
-      if( updateCount === config.batchSize ) {
-        config.timeInt = Math.max( config.minTimeInt, Math.ceil( config.timeInt / 2 ) );
-      } else if( updateCount < config.minUpdate ) {
-        config.timeInt = Math.min( config.maxTimeInt, config.timeInt * 2 );
-      }
+    if( config.nextRun > new Date().getTime() ) {
+      continue;
     }
-    setTimeout( () => {
-      bigqueryArchive.run( kind, config, callback );
-    }, config.timeInt * 1000 );
-  };
 
-  setTimeout( () => {
-    bigqueryArchive.run( kind, config, callback );
-  }, config.timeInt * 1000 );
+    var callback = ( err, updateCount ) => {
+      if( err ) {
+        console.error( String( err ) );
+      } else {
+        if( updateCount === config.batchSize ) {
+          config.timeInt = Math.max( config.minTimeInt, Math.ceil( config.timeInt / 2 ) );
+        } else if( updateCount < config.minUpdate ) {
+          config.timeInt = Math.min( config.maxTimeInt, config.timeInt * 2 );
+        }
+      }
+      config.nextRun = new Date().getTime() + config.timeInt * 1000;
+      bigQueryRun();
+      };
 
-});
+    return bigqueryArchive.run( kind, config, callback );
+  }
+
+  setTimeout( bigQueryRun, 5 * 1000 );
+} )();
