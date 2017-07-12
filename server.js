@@ -26,7 +26,7 @@ const archiveConfig = {
 };
 
 const bigqueryConfig = {
-  AUDIT_LOG: { sortBy:'CREATION_DATE', lastValue: null, batchSize:10, minUpdate:100, timeInt:60, minTimeInt:60, maxTimeInt:900 }
+  AUDIT_LOG: { sortBy:'CREATION_DATE', lastValue: null, batchSize:10, minUpdate:100, timeInt:300, minTimeInt:60, maxTimeInt:900 }
 };
 
 (function run() {
