@@ -21,7 +21,7 @@ class BigqueryArchive {
     this.schema = require( `./schema/${ this.kind }.js` );
     datastore = datastoreClient({ projectId:process.env.GCP_PROJ_ID, kind:this.kind, schema:this.schema });
 
-    if( this.config.lastValue !== '' ) {
+    if( this.config.lastValue != null ) {
       this.updateBigqueryFromDatastore();
     } else {
       this.findAndUpdateLastValue();
@@ -36,7 +36,8 @@ class BigqueryArchive {
         console.log( `${ this.kind }: ${ Object.keys( rows ).length } entities read from Bigquery.` );
         if( rows && rows[0] && rows[0].value ) {
           var lastValue = rows[0].value.value;
-          this.config.lastValue = [ lastValue.slice(0, 10), 'T', lastValue.slice( 11 ), 'Z' ].join('');
+          console.log(`${ this.kind }: lastValue queried from Bigquery is ${ lastValue } having type `+ typeof lastValue);
+          this.config.lastValue = new Date([ lastValue.slice(0, 10), 'T', lastValue.slice( 11 ), 'Z' ].join(''));
         }
         this.updateBigqueryFromDatastore();
       } else {
@@ -87,7 +88,7 @@ class BigqueryArchive {
     var rows = [];
     entities.forEach( ( entity ) => {
       var insertId;
-      insertId = entity[ this.config.id ];
+      insertId = entity[ this.schema.primaryKey ];
       rows.push( { insertId:insertId, json:entity } );
     });
 
@@ -108,7 +109,7 @@ class BigqueryArchive {
         }
         this.callback( err );
       } else {
-        this.config.lastValue = entities[ entities.length -1 ][ this.config.sortBy ];
+        this.config.lastValue = new Date(entities[ entities.length -1 ][ this.config.sortBy ]);
         console.log( `${ rows.length } ${ this.kind } records inserted !` );
         this.callback( null, rows.length );
       }
