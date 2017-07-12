@@ -4,7 +4,7 @@ COPY package.json .
 RUN npm install
 
 COPY config.js config.js
-# COPY BigqueryArchive.js .
+COPY BigqueryArchive.js .
 COPY schema schema
 COPY JsonArchive.js .
 COPY server.js .
