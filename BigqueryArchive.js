@@ -33,6 +33,7 @@ class BigqueryArchive {
     var queryStr = `SELECT MAX(${ this.config.sortBy }) as value FROM [${ this.kind }]`;
     bigquery.query( queryStr, (err,rows) => {
       if( !err ) {
+        console.log( `${ this.kind }: ${ Object.keys( rows ).length } entities read from Bigquery.` );
         if( rows && rows[0] && rows[0].value ) {
           var lastValue = rows[0].value.value;
           this.config.lastValue = [ lastValue.slice(0, 10), 'T', lastValue.slice( 11 ), 'Z' ].join('');
@@ -58,16 +59,6 @@ class BigqueryArchive {
         this.callback( null, 0 );
       } else {
         updates.data.forEach( ( json ) => {
-          // HACK
-          if( this.kind == 'PRATILIPI' ) {
-            json.TAG_IDS = JSON.stringify( json.TAG_IDS );
-            json.SUGGESTED_TAGS = JSON.stringify( json.SUGGESTED_TAGS );
-          }
-          // HACK
-          if( this.kind == 'USER_PRATILIPI' ) {
-            json[ 'REVIEW_LENGTH' ] = json.REVIEW == null ? 0 : json.REVIEW.length;
-            delete( json.REVIEW );
-          }
           if( this.config.lastValue < json[ this.config.sortBy ] ) {
             this.config.lastValue = json[ this.config.sortBy ];
           }
@@ -83,7 +74,7 @@ class BigqueryArchive {
 
   insertInBigQuery( entities, updateCount ) {
 
-    console.log( `Found ${ entities.length } new additions for ${ this.kind }.` );
+    console.log( `${ this.kind }: Inserting ${ entities.length } entities with ${ updateCount } updates to BQ.` );
 
     if( entities.length === 0 ) {
       this.callback( null, 0 );
