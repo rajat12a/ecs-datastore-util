@@ -68,8 +68,9 @@ class JsonArchive {
     }).on( 'line', ( line ) => {
       var json = JSON.parse( line );
       entities[ json[ this.schema.primaryKey ] ] = json;
-      if( minValue < json[ this.config.sortBy ] )
+      if( minValue < json[ this.config.sortBy ] ) {
         minValue = json[ this.config.sortBy ];
+      }
     }).on( 'close', () => {
       console.log( `${ this.kind }: ${ Object.keys( entities ).length } entities read from file system.` );
       this.config.minValue = new Date( minValue );
@@ -83,8 +84,9 @@ class JsonArchive {
 
     var filter = [];
     filter.push([ this.config.sortBy, '>=', new Date( this.config.minValue ) ]);
-    if( this.config.maxValue != null )
+    if( this.config.maxValue != null ) {
       filter.push([ this.config.sortBy, '<', new Date( this.config.maxValue ) ]);
+    }
     var orderBy = [ this.config.sortBy ];
 
     datastore.query( filter, null, null, this.config.batchSize, orderBy ).then( ( updates ) => {
@@ -103,8 +105,9 @@ class JsonArchive {
             json[ 'REVIEW_LENGTH' ] = json.REVIEW == null ? 0 : json.REVIEW.length;
             delete( json.REVIEW );
           }
-          if( this.config.minValue < json[ this.config.sortBy ] )
+          if( this.config.minValue < json[ this.config.sortBy ] ) {
             this.config.minValue = json[ this.config.sortBy ];
+          }
           entities[ json[ this.schema.primaryKey ] ] = json;
         });
         this.writeToFile( entities, updates.data.length );
@@ -125,9 +128,9 @@ class JsonArchive {
       return;
     }
 
-    if( this.config.boost > 1 )
+    if( this.config.boost > 1 ) {
       updateCount = updateCount + ( this.config.boost - this.boost ) * this.config.batchSize;
-
+    }
 
     var wStream = fs.createWriteStream( this.kind, { encoding: 'utf8' } );
     var gcsStream = storage.file( this.kind ).createWriteStream();

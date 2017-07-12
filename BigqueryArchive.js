@@ -33,12 +33,10 @@ class BigqueryArchive {
     var queryStr = `SELECT MAX(${ this.config.sortBy }) as value FROM [${ this.kind }]`;
     bigquery.query( queryStr, (err,rows) => {
       if( !err ) {
-        console.log(`${ this.kind }: from  BigQuery read `+JSON.stringify(rows) );
-        console.log( `${ this.kind }: ${ Object.keys( rows ).length } entities read from Bigquery.` );
         if( rows && rows[0] && rows[0].value ) {
           var lastValue = rows[0].value.value;
           this.config.lastValue = new Date([ lastValue.slice(0, 10), 'T', lastValue.slice( 11 ), 'Z' ].join(''));
-          console.log(`${ this.kind }: lastValue queried from Bigquery is ${ this.config.lastValue } having type `+ typeof this.config.lastValue);
+          console.log( `${ this.kind }: lastValue read from Bigquery.` );
         }
         this.updateBigqueryFromDatastore();
       } else {
@@ -52,7 +50,6 @@ class BigqueryArchive {
 
     var filter = [];
     var entities={};
-    console.log(`${ this.kind }: lastValue to be queried in datastore is ${ this.config.lastValue } having type `+ typeof this.config.lastValue);
     if( this.config.lastValue != null ) {
       filter.push([ this.config.sortBy, '>', new Date( this.config.lastValue ) ]);
     }
@@ -63,7 +60,6 @@ class BigqueryArchive {
       if( updates.data.length === 0 ) {
         this.callback( null, 0 );
       } else {
-        console.log(`${ this.kind }: From Datastore Entities queried.`+JSON.stringify(updates.data));
         this.insertInBigQuery( updates.data, updates.data.length );
       }
     }).catch( ( err ) => {
@@ -75,7 +71,7 @@ class BigqueryArchive {
 
   insertInBigQuery( entities, updateCount ) {
 
-    console.log( `${ this.kind }: Inserting ${ entities.length } entities with ${ updateCount } updates to BQ.` );
+    console.log( `${ this.kind }: Inserting ${ entities.length } entities to BQ.` );
 
     if( entities.length === 0 ) {
       this.callback( null, 0 );
