@@ -100,11 +100,6 @@ class JsonArchive {
             json.TAG_IDS = JSON.stringify( json.TAG_IDS );
             json.SUGGESTED_TAGS = JSON.stringify( json.SUGGESTED_TAGS );
           }
-          // HACK
-          if( this.kind == 'USER_PRATILIPI' ) {
-            json[ 'REVIEW_LENGTH' ] = json.REVIEW == null ? 0 : json.REVIEW.length;
-            delete( json.REVIEW );
-          }
           if( this.config.minValue < json[ this.config.sortBy ] ) {
             this.config.minValue = json[ this.config.sortBy ];
           }
