@@ -52,15 +52,17 @@ class BigqueryArchive {
     var entities={};
     console.log( `${ this.kind }: lastValue after which entities needs to be fetched from Datastore is ${ this.config.lastValue }.` );
     if( this.config.lastValue != null ) {
-      filter.push([ this.config.sortBy, '>', new Date( this.config.lastValue ) ]);
+      filter.push([ this.config.sortBy, '>=', new Date( this.config.lastValue ) ]);
     }
     var orderBy = [ this.config.sortBy ];
 
     datastore.query( filter, null, null, this.config.batchSize, orderBy ).then( ( updates ) => {
       console.log( `${ this.kind }: Found ${ updates.data.length } new additions/updations.` );
-      if( updates.data.length === 0 ) {
-        this.callback( null, 0 );
+      if( updates.data.length === 1 ) {
+        this.callback( null, 1 );
       } else {
+        var firstEntity = updates.data.splice( 0, 1 );
+        console.log( `${ this.kind }: Removed First Entity ${ firstEntity }`);
         this.insertInBigQuery( updates.data, updates.data.length );
       }
     }).catch( ( err ) => {
