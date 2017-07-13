@@ -45,11 +45,11 @@ const bigqueryConfig = {
 
 (function run() {
 
-  var archives = Object.values( archiveConfig );
+  var archives = Object.keys( archiveConfig );
   for( var i = 0; i < archives.length; i++ ) {
 
-    var archive = archive[ i ];
-    var config = configs[ archive ];
+    var archive = archives[ i ];
+    var config = archiveConfig[ archive ];
 
     if( config.nextRun > new Date().getTime() ) {
       continue;

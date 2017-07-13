@@ -66,7 +66,7 @@ class JsonArchive {
       input: fs.createReadStream( this.config.fileName, { encoding: 'utf8' } )
     }).on( 'line', ( line ) => {
       var json = JSON.parse( line );
-      entities[ json[ this.schema.primaryKey ] ] = json;
+      entities[ json[ this.config.schema.primaryKey ] ] = json;
       if( minValue < json[ this.config.sortBy ] ) {
         minValue = json[ this.config.sortBy ];
       }
@@ -82,27 +82,27 @@ class JsonArchive {
   updateFromDataStore( entities ) {
 
     var filter = [];
-    filter.push([ this.config.sortBy, '>=', new Date( this.config.minValue ) ]);
+    filter.push([ this.config.sortBy, '>=', this.config.minValue ]);
     if( this.config.maxValue != null ) {
-      filter.push([ this.config.sortBy, '<', new Date( this.config.maxValue ) ]);
+      filter.push([ this.config.sortBy, '<', this.config.maxValue ]);
     }
     var orderBy = [ this.config.sortBy ];
 
     datastore.query( filter, null, null, this.config.batchSize, orderBy ).then( ( updates ) => {
-      console.log( `${ this.config.kind }: Found ${ updates.data.length } new additions/updations.` );
+      console.log( `${ this.archive }: Found ${ updates.data.length } new additions/updations.` );
       if( updates.data.length === 1 ) {
         this.callback( null, 1 );
       } else {
         updates.data.forEach( ( json ) => {
           // HACK
-          if( this.kind == 'PRATILIPI' ) {
+          if( this.config.kind == 'PRATILIPI' ) {
             json.TAG_IDS = JSON.stringify( json.TAG_IDS );
             json.SUGGESTED_TAGS = JSON.stringify( json.SUGGESTED_TAGS );
           }
           if( this.config.minValue < json[ this.config.sortBy ] ) {
             this.config.minValue = json[ this.config.sortBy ];
           }
-          entities[ json[ this.schema.primaryKey ] ] = json;
+          entities[ json[ this.config.schema.primaryKey ] ] = json;
         });
         this.writeToFile( entities, updates.data.length );
       }
