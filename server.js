@@ -39,7 +39,18 @@ const archiveConfig = {
 };
 
 const bigqueryConfig = {
-  AUDIT_LOG: { sortBy:'CREATION_DATE', lastValue:null, batchSize:1000, minUpdate:100, timeInt:60, minTimeInt:60, maxTimeInt:900, nextRun:0 }
+  AUDIT_LOG: {
+    kind:'AUDIT_LOG',
+    schema:require( `./schema/AUDIT_LOG.js` ),
+    sortBy:'CREATION_DATE',
+    lastValue:null,
+    batchSize:1000,
+    minUpdate:100,
+    timeInt:60,
+    minTimeInt:60,
+    maxTimeInt:900,
+    nextRun:0
+  }
 };
 
 
@@ -79,11 +90,11 @@ const bigqueryConfig = {
 
 
 ( function bigQueryRun() {
-  var kinds = Object.keys( bigqueryConfig );
-  for( var i = 0; i < kinds.length; i++ ) {
+  var bigQueries = Object.keys( bigqueryConfig );
+  for( var i = 0; i < bigQueries.length; i++ ) {
 
-    var kind = kinds[ i ];
-    var config = bigqueryConfig[ kind ];
+    var bigQuery = bigQueries[ i ];
+    var config = bigqueryConfig[ bigQuery ];
 
     if( config.nextRun > new Date().getTime() ) {
       continue;
@@ -103,7 +114,7 @@ const bigqueryConfig = {
       bigQueryRun();
       };
 
-    return bigqueryArchive.run( kind, config, callback );
+    return bigqueryArchive.run( bigQuery, config, callback );
   }
 
   setTimeout( bigQueryRun, 5 * 1000 );

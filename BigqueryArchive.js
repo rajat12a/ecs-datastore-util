@@ -13,12 +13,13 @@ class BigqueryArchive {
     return this;
   }
 
-  run( kind, config, callback ) {
+  run( bigQuery, config, callback ) {
 
-    this.kind = kind;
+    this.bigQuery = bigQuery;
+    this.kind = config.kind;
     this.config = config;
     this.callback = callback;
-    this.schema = require( `./schema/${ this.kind }.js` );
+    this.schema = config.schema;
     datastore = datastoreClient({ projectId:process.env.GCP_PROJ_ID, kind:this.kind, schema:this.schema });
 
     if( this.config.lastValue != null ) {
