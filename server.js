@@ -83,7 +83,7 @@ const bigqueryConfig = {
 
     var callback = ( err, updateCount ) => {
       if( err ) {
-        console.error( String( err ) );
+        console.error( archive + ": " + String( err ) );
       } else {
         if( updateCount === config.batchSize ) {
           config.timeInt = Math.max( config.minTimeInt, Math.ceil( config.timeInt / 2 ) );
@@ -117,7 +117,7 @@ const bigqueryConfig = {
 
     var callback = ( err, updateCount ) => {
       if( err ) {
-        console.error( String( err ) );
+        console.error( bigQuery + ": " + String( err ) );
       } else {
         if( updateCount === config.batchSize ) {
           config.timeInt = Math.max( config.minTimeInt, Math.ceil( config.timeInt / 2 ) );
