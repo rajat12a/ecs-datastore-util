@@ -29,7 +29,7 @@ const archiveConfig = {
       batchSize:1000, minUpdate:1000,
       timeInt:60, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:100 },
   USER_PRATILIPI:{
-      sortBy:'_TIMESTAMP_', minValue:new Date(1498847400000), maxValue:new Date(1501525800000),
+      sortBy:'_TIMESTAMP_', minValue:new Date(0), maxValue:new Date(1483209000000),
       batchSize:1000, minUpdate:1000,
       timeInt:60, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:100 }
 };
