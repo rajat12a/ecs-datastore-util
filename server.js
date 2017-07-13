@@ -16,18 +16,28 @@ const bigqueryArchive = new BigqueryArchive();
 
 
 const archiveConfig = {
-  AUTHOR:         { sortBy:'_TIMESTAMP_', minValue:new Date(0), batchSize:1000, minUpdate: 100, timeInt:60, minTimeInt: 60, maxTimeInt: 900, nextRun:0, boost: 10 },
-  PRATILIPI:      { sortBy:'_TIMESTAMP_', minValue:new Date(0), batchSize:1000, minUpdate: 100, timeInt:60, minTimeInt: 60, maxTimeInt: 900, nextRun:0, boost: 10 },
-  USER_AUTHOR:    { sortBy:'FOLLOW_DATE', minValue:new Date(0), batchSize:1000, minUpdate:1000, timeInt:60, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:100 },
-  USER_PRATILIPI: {
-      sortBy:'_TIMESTAMP_', minValue:new Date(1493577000000), maxValue:new Date(1496255400000),
+  AUTHOR:{
+      sortBy:'_TIMESTAMP_', minValue:new Date(0),
+      batchSize:1000, minUpdate: 100,
+      timeInt:60, minTimeInt:300, maxTimeInt: 900, nextRun:0, boost: 10 },
+  PRATILIPI:{
+      sortBy:'_TIMESTAMP_', minValue:new Date(0),
+      batchSize:1000, minUpdate: 100,
+      timeInt:60, minTimeInt:300, maxTimeInt: 900, nextRun:0, boost: 10 },
+  USER_AUTHOR:{
+      sortBy:'FOLLOW_DATE', minValue:new Date(0),
       batchSize:1000, minUpdate:1000,
-      timeInt:60, minTimeInt: 15, maxTimeInt:3600, nextRun:0, boost:100 }
+      timeInt:60, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:100 },
+  USER_PRATILIPI:{
+      sortBy:'_TIMESTAMP_', minValue:new Date(1498847400000), maxValue:new Date(1501525800000),
+      batchSize:1000, minUpdate:1000,
+      timeInt:60, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:100 }
 };
 
 const bigqueryConfig = {
   AUDIT_LOG: { sortBy:'CREATION_DATE', lastValue:null, batchSize:1000, minUpdate:100, timeInt:60, minTimeInt:60, maxTimeInt:900, nextRun:0 }
 };
+
 
 (function run() {
 
@@ -63,6 +73,7 @@ const bigqueryConfig = {
 
 })();
 
+/*
 ( function bigQueryRun() {
   var kinds = Object.keys( bigqueryConfig );
   for( var i = 0; i < kinds.length; i++ ) {
@@ -93,3 +104,4 @@ const bigqueryConfig = {
 
   setTimeout( bigQueryRun, 5 * 1000 );
 } )();
+*/
