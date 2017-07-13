@@ -35,12 +35,13 @@ class JsonArchive {
 
       file.exists( ( err, exists ) => {
         if( err ) {
+          console.log( `${ this.archive }: Error while checking for file exist in storage.` );
           this.callback( err, null );
         } else if( exists ) {
           console.log( `${ this.archive }: Downloading archive from GCS ...` );
           file.download( { destination:this.config.fileName }, ( err ) => {
-
             if( err ) {
+              console.log( `${ this.archive }: Error while downloading for file exist in storage.` );
               this.callback( err, null );
             } else {
               this.readFromFile();
