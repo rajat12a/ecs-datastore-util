@@ -59,8 +59,8 @@ class BigqueryArchive {
 
     datastore.query( filter, null, null, this.config.batchSize, orderBy ).then( ( updates ) => {
       console.log( `${ this.kind }: Found ${ updates.data.length } new additions/updations.` );
-      if( updates.data.length === 1 ) {
-        this.callback( null, 1 );
+      if( updates.data.length <= 1 ) {
+        this.callback( null, updates.data.length );
       } else {
         var firstEntity = updates.data.splice( 0, 1 );
         console.log( `${ this.kind }: Removed First Entity ` + JSON.stringify( firstEntity ) );
@@ -76,11 +76,6 @@ class BigqueryArchive {
   insertInBigQuery( entities, updateCount ) {
 
     console.log( `${ this.kind }: Inserting ${ entities.length } entities to BQ.` );
-
-    if( entities.length === 0 ) {
-      this.callback( null, 0 );
-      return;
-    }
 
 
     var rows = [];
@@ -105,7 +100,7 @@ class BigqueryArchive {
             });
           });
         }
-        this.callback( err );
+        this.callback( err, null );
       } else {
         this.config.lastValue = new Date(entities[ entities.length -1 ][ this.config.sortBy ]);
         console.log( `${ this.kind }: ${ rows.length } records inserted !` );

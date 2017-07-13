@@ -90,8 +90,8 @@ class JsonArchive {
 
     datastore.query( filter, null, null, this.config.batchSize, orderBy ).then( ( updates ) => {
       console.log( `${ this.archive }: Found ${ updates.data.length } new additions/updations.` );
-      if( updates.data.length === 1 ) {
-        this.callback( null, 1 );
+      if( updates.data.length <= 1 ) {
+        this.callback( null, updates.data.length );
       } else {
         updates.data.forEach( ( json ) => {
           // HACK

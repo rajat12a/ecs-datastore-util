@@ -20,52 +20,37 @@ const archiveConfig = {
       kind:'AUTHOR', schema:require( `./schema/AUTHOR.js` ), fileName:'AUTHOR',
       sortBy:'_TIMESTAMP_', minValue:new Date(0),
       batchSize:1000, minUpdate: 100,
-      timeInt:60, minTimeInt:300, maxTimeInt: 900, nextRun:0, boost: 10 },
+      timeInt:900, minTimeInt:300, maxTimeInt: 900, nextRun:0, boost: 10 },
   PRATILIPI:{
       kind:'PRATILIPI', schema:require( `./schema/PRATILIPI.js` ), fileName:'PRATILIPI',
       sortBy:'_TIMESTAMP_', minValue:new Date(0),
       batchSize:1000, minUpdate: 100,
-      timeInt:60, minTimeInt:300, maxTimeInt: 900, nextRun:0, boost: 10 },
+      timeInt:900, minTimeInt:300, maxTimeInt: 900, nextRun:0, boost: 10 },
   USER_AUTHOR:{
       kind:'USER_AUTHOR', schema:require( `./schema/USER_AUTHOR.js` ), fileName:'USER_AUTHOR',
       sortBy:'FOLLOW_DATE', minValue:new Date(0),
       batchSize:1000, minUpdate:1000,
-      timeInt:60, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:100 },
-  USER_PRATILIPI_201701:{
-      kind:'USER_PRATILIPI', schema:require( `./schema/USER_PRATILIPI.js` ), fileName:'USER_PRATILIPI-2017.01',
-      sortBy:'_TIMESTAMP_', minValue:new Date(1483209000000), maxValue:new Date(1485887400000),
-      batchSize:1000, minUpdate:1000,
-      timeInt:60, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:100 },
-  USER_PRATILIPI_201702:{
-      kind:'USER_PRATILIPI', schema:require( `./schema/USER_PRATILIPI.js` ), fileName:'USER_PRATILIPI-2017.02',
-      sortBy:'_TIMESTAMP_', minValue:new Date(1485887400000), maxValue:new Date(1488306600000),
-      batchSize:1000, minUpdate:1000,
-      timeInt:60, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:100 },
-  USER_PRATILIPI_201703:{
-      kind:'USER_PRATILIPI', schema:require( `./schema/USER_PRATILIPI.js` ), fileName:'USER_PRATILIPI-2017.03',
-      sortBy:'_TIMESTAMP_', minValue:new Date(1488306600000), maxValue:new Date(1490985000000),
-      batchSize:1000, minUpdate:1000,
-      timeInt:60, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:100 },
+      timeInt:900, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:100 },
   USER_PRATILIPI_201704:{
       kind:'USER_PRATILIPI', schema:require( `./schema/USER_PRATILIPI.js` ), fileName:'USER_PRATILIPI-2017.04',
       sortBy:'_TIMESTAMP_', minValue:new Date(1490985000000), maxValue:new Date(1493577000000),
       batchSize:1000, minUpdate:1000,
-      timeInt:60, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:100 },
+      timeInt:900, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:100 },
   USER_PRATILIPI_201705:{
       kind:'USER_PRATILIPI', schema:require( `./schema/USER_PRATILIPI.js` ), fileName:'USER_PRATILIPI-2017.05',
       sortBy:'_TIMESTAMP_', minValue:new Date(1493577000000), maxValue:new Date(1496255400000),
       batchSize:1000, minUpdate:1000,
-      timeInt:60, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:100 },
+      timeInt:900, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:100 },
   USER_PRATILIPI_201706:{
       kind:'USER_PRATILIPI', schema:require( `./schema/USER_PRATILIPI.js` ), fileName:'USER_PRATILIPI-2017.06',
       sortBy:'_TIMESTAMP_', minValue:new Date(1496255400000), maxValue:new Date(1498847400000),
       batchSize:1000, minUpdate:1000,
-      timeInt:60, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:100 },
+      timeInt:900, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:100 },
   USER_PRATILIPI_201707:{
       kind:'USER_PRATILIPI', schema:require( `./schema/USER_PRATILIPI.js` ), fileName:'USER_PRATILIPI-2017.07',
       sortBy:'_TIMESTAMP_', minValue:new Date(1498847400000), maxValue:new Date(1501525800000),
       batchSize:1000, minUpdate:1000,
-      timeInt:60, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:100 }
+      timeInt:900, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:100 }
 };
 
 const bigqueryConfig = {
