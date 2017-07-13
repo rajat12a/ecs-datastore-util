@@ -62,7 +62,7 @@ class BigqueryArchive {
         this.callback( null, 1 );
       } else {
         var firstEntity = updates.data.splice( 0, 1 );
-        console.log( `${ this.kind }: Removed First Entity ${ firstEntity }`);
+        console.log( `${ this.kind }: Removed First Entity ` + JSON.stringify( firstEntity ) );
         this.insertInBigQuery( updates.data, updates.data.length );
       }
     }).catch( ( err ) => {
