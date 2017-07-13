@@ -17,29 +17,28 @@ class JsonArchive {
   }
 
 
-  run( kind, config, callback ) {
+  run( archive, config, callback ) {
 
-    this.kind = kind;
+    this.archive = archive;
     this.config = config;
     this.callback = callback;
-    this.schema = require( `./schema/${ this.kind }.js` );
-    datastore = datastoreClient({ projectId:process.env.GCP_PROJ_ID, kind:this.kind, schema:this.schema });
+    datastore = datastoreClient({ projectId:process.env.GCP_PROJ_ID, kind:config.kind, schema:config.schema });
     this.boost = config.boost;
 
-    if( fs.existsSync( this.kind ) ) {
+    if( fs.existsSync( this.config.fileName ) ) {
 
       this.readFromFile();
 
     } else {
 
-      var file = storage.file( this.kind );
+      var file = storage.file( this.config.fileName );
 
       file.exists( ( err, exists ) => {
         if( err ) {
           this.callback( err, null );
         } else if( exists ) {
-          console.log( `${ this.kind }: Downloading archive from GCS ...` );
-          file.download( { destination: this.kind }, ( err ) => {
+          console.log( `${ this.archive }: Downloading archive from GCS ...` );
+          file.download( { destination:this.config.fileName }, ( err ) => {
 
             if( err ) {
               this.callback( err, null );
@@ -64,7 +63,7 @@ class JsonArchive {
     var minValue = '';
 
     readline.createInterface({
-      input: fs.createReadStream( this.kind, { encoding: 'utf8' } )
+      input: fs.createReadStream( this.config.fileName, { encoding: 'utf8' } )
     }).on( 'line', ( line ) => {
       var json = JSON.parse( line );
       entities[ json[ this.schema.primaryKey ] ] = json;
@@ -72,7 +71,7 @@ class JsonArchive {
         minValue = json[ this.config.sortBy ];
       }
     }).on( 'close', () => {
-      console.log( `${ this.kind }: ${ Object.keys( entities ).length } entities read from file system.` );
+      console.log( `${ this.archive }: ${ Object.keys( entities ).length } entities read from file system.` );
       this.config.minValue = new Date( minValue );
       this.updateFromDataStore( entities );
     });
@@ -90,7 +89,7 @@ class JsonArchive {
     var orderBy = [ this.config.sortBy ];
 
     datastore.query( filter, null, null, this.config.batchSize, orderBy ).then( ( updates ) => {
-      console.log( `${ this.kind }: Found ${ updates.data.length } new additions/updations.` );
+      console.log( `${ this.config.kind }: Found ${ updates.data.length } new additions/updations.` );
       if( updates.data.length === 1 ) {
         this.callback( null, 1 );
       } else {
@@ -118,7 +117,7 @@ class JsonArchive {
 
     if( updateCount === this.config.batchSize && this.boost > 1 ) {
       this.boost--;
-      console.log( `${ this.kind }: Bosting ... ${ this.boost }` );
+      console.log( `${ this.archive }: Bosting ... ${ this.boost }` );
       this.updateFromDataStore( entities );
       return;
     }
@@ -127,10 +126,10 @@ class JsonArchive {
       updateCount = updateCount + ( this.config.boost - this.boost ) * this.config.batchSize;
     }
 
-    var wStream = fs.createWriteStream( this.kind, { encoding: 'utf8' } );
-    var gcsStream = storage.file( this.kind ).createWriteStream();
+    var wStream = fs.createWriteStream( this.config.fileName, { encoding: 'utf8' } );
+    var gcsStream = storage.file( this.config.fileName ).createWriteStream();
 
-    console.log( `${ this.kind }: Writing ${ Object.keys( entities ).length } entities with ${ updateCount } updates to FS & GCS ...` );
+    console.log( `${ this.archive }: Writing ${ Object.keys( entities ).length } entities with ${ updateCount } updates to FS & GCS ...` );
 
     Object.values( entities ).forEach( (json) => {
       var str = JSON.stringify( json );
@@ -159,7 +158,7 @@ class JsonArchive {
 
     // Must wait for some time before making a copy as the object is not immediately available
     setTimeout( () => {
-      storage.file( this.kind ).copy( this.kind + '/' + timeStampStr );
+      storage.file( this.config.fileName ).copy( this.config.fileName + '/' + timeStampStr );
     }, 60000 ); // 60 seconds
 
 

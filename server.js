@@ -17,18 +17,22 @@ const bigqueryArchive = new BigqueryArchive();
 
 const archiveConfig = {
   AUTHOR:{
+      kind:'AUTHOR', schema:require( `./schema/AUTHOR.js` ), fileName:'AUTHOR',
       sortBy:'_TIMESTAMP_', minValue:new Date(0),
       batchSize:1000, minUpdate: 100,
       timeInt:60, minTimeInt:300, maxTimeInt: 900, nextRun:0, boost: 10 },
   PRATILIPI:{
+      kind:'PRATILIPI', schema:require( `./schema/PRATILIPI.js` ), fileName:'PRATILIPI',
       sortBy:'_TIMESTAMP_', minValue:new Date(0),
       batchSize:1000, minUpdate: 100,
       timeInt:60, minTimeInt:300, maxTimeInt: 900, nextRun:0, boost: 10 },
   USER_AUTHOR:{
+      kind:'USER_AUTHOR', schema:require( `./schema/USER_AUTHOR.js` ), fileName:'USER_AUTHOR',
       sortBy:'FOLLOW_DATE', minValue:new Date(0),
       batchSize:1000, minUpdate:1000,
       timeInt:60, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:100 },
   USER_PRATILIPI:{
+      kind:'USER_PRATILIPI', schema:require( `./schema/USER_PRATILIPI.js` ), fileName:'USER_PRATILIPI-2016',
       sortBy:'_TIMESTAMP_', minValue:new Date(0), maxValue:new Date(1483209000000),
       batchSize:1000, minUpdate:1000,
       timeInt:60, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:100 }
@@ -41,11 +45,11 @@ const bigqueryConfig = {
 
 (function run() {
 
-  var kinds = Object.keys( archiveConfig );
-  for( var i = 0; i < kinds.length; i++ ) {
+  var archives = Object.values( archiveConfig );
+  for( var i = 0; i < archives.length; i++ ) {
 
-    var kind = kinds[ i ];
-    var config = archiveConfig[ kind ];
+    var archive = archive[ i ];
+    var config = configs[ archive ];
 
     if( config.nextRun > new Date().getTime() ) {
       continue;
@@ -65,13 +69,14 @@ const bigqueryConfig = {
       run();
     };
 
-    return jsonArchive.run( kind, config, callback );
+    return jsonArchive.run( archive, config, callback );
 
   }
 
   setTimeout( run, 5 * 1000 );
 
 })();
+
 
 ( function bigQueryRun() {
   var kinds = Object.keys( bigqueryConfig );
