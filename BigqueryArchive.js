@@ -36,7 +36,7 @@ class BigqueryArchive {
         if( rows && rows[0] && rows[0].value ) {
           var lastValue = rows[0].value.value;
           this.config.lastValue = new Date([ lastValue.slice(0, 10), 'T', lastValue.slice( 11 ), 'Z' ].join(''));
-          console.log( `${ this.kind }: lastValue read from Bigquery.` );
+          console.log( `${ this.kind }: lastValue read from Bigquery is ${ this.config.lastValue }.` );
         }
         this.updateBigqueryFromDatastore();
       } else {
@@ -50,6 +50,7 @@ class BigqueryArchive {
 
     var filter = [];
     var entities={};
+    console.log( `${ this.kind }: lastValue after which entities needs to be fetched from Datastore is ${ this.config.lastValue }.` );
     if( this.config.lastValue != null ) {
       filter.push([ this.config.sortBy, '>', new Date( this.config.lastValue ) ]);
     }
