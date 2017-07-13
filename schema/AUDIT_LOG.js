@@ -2,8 +2,8 @@ module.exports = {
 
   structure:{
 
-    AUDIT_LOG_ID:		    { type: 'INTEGER',   default: null },
-    USER_ID:			      { type: 'INTEGER',   default: null },
+    AUDIT_LOG_ID:		    { type: 'INTEGER',   default: 0 },
+    USER_ID:			      { type: 'INTEGER',   default: 0 },
     ACCESS_ID:			    { type: 'STRING',    default: null },
     ACCESS_TYPE:		    { type: 'STRING',    default: null },
     PRIMARY_CONTENT_ID: { type: 'STRING',    default: null },

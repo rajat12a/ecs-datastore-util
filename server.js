@@ -73,7 +73,6 @@ const bigqueryConfig = {
 
 })();
 
-/*
 ( function bigQueryRun() {
   var kinds = Object.keys( bigqueryConfig );
   for( var i = 0; i < kinds.length; i++ ) {
@@ -104,4 +103,3 @@ const bigqueryConfig = {
 
   setTimeout( bigQueryRun, 5 * 1000 );
 } )();
-*/
