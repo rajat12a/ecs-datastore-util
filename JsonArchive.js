@@ -18,43 +18,45 @@ class JsonArchive {
 
 
   run( archive, config, callback ) {
+    try{
+      this.archive = archive;
+      this.config = config;
+      this.callback = callback;
+      datastore = datastoreClient({ projectId:process.env.GCP_PROJ_ID, kind:config.kind, schema:config.schema });
+      this.boost = config.boost;
 
-    this.archive = archive;
-    this.config = config;
-    this.callback = callback;
-    datastore = datastoreClient({ projectId:process.env.GCP_PROJ_ID, kind:config.kind, schema:config.schema });
-    this.boost = config.boost;
+      if( fs.existsSync( this.config.fileName ) ) {
 
-    if( fs.existsSync( this.config.fileName ) ) {
+        this.readFromFile();
 
-      this.readFromFile();
+      } else {
 
-    } else {
+        var file = storage.file( this.config.fileName );
 
-      var file = storage.file( this.config.fileName );
+        file.exists( ( err, exists ) => {
+          if( err ) {
+            console.log( `${ this.archive }: Error while checking for file exist in storage.` );
+            this.callback( err, null );
+          } else if( exists ) {
+            console.log( `${ this.archive }: Downloading archive from GCS ...` );
+            file.download( { destination:this.config.fileName }, ( err ) => {
+              if( err ) {
+                console.log( `${ this.archive }: Error while downloading for file exist in storage.` );
+                this.callback( err, null );
+              } else {
+                this.readFromFile();
+              }
 
-      file.exists( ( err, exists ) => {
-        if( err ) {
-          console.log( `${ this.archive }: Error while checking for file exist in storage.` );
-          this.callback( err, null );
-        } else if( exists ) {
-          console.log( `${ this.archive }: Downloading archive from GCS ...` );
-          file.download( { destination:this.config.fileName }, ( err ) => {
-            if( err ) {
-              console.log( `${ this.archive }: Error while downloading for file exist in storage.` );
-              this.callback( err, null );
-            } else {
-              this.readFromFile();
-            }
+            });
+          } else {
+            this.updateFromDataStore( {} );
+          }
+        });
 
-          });
-        } else {
-          this.updateFromDataStore( {} );
-        }
-      });
-
+      }
+    } catch( error ) {
+      console.log( `${ this.archive }: Error while run.` );
     }
-
   }
 
 
