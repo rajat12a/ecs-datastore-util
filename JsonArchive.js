@@ -18,45 +18,43 @@ class JsonArchive {
 
 
   run( archive, config, callback ) {
-    try{
-      this.archive = archive;
-      this.config = config;
-      this.callback = callback;
-      datastore = datastoreClient({ projectId:process.env.GCP_PROJ_ID, kind:config.kind, schema:config.schema });
-      this.boost = config.boost;
 
-      if( fs.existsSync( this.config.fileName ) ) {
+    this.archive = archive;
+    this.config = config;
+    this.callback = callback;
+    datastore = datastoreClient({ projectId:process.env.GCP_PROJ_ID, kind:config.kind, schema:config.schema });
+    this.boost = config.boost;
 
-        this.readFromFile();
+    if( fs.existsSync( this.config.fileName ) ) {
 
-      } else {
+      this.readFromFile();
 
-        var file = storage.file( this.config.fileName );
+    } else {
 
-        file.exists( ( err, exists ) => {
-          if( err ) {
-            console.log( `${ this.archive }: Error while checking for file exist in storage.` );
-            this.callback( err, null );
-          } else if( exists ) {
-            console.log( `${ this.archive }: Downloading archive from GCS ...` );
-            file.download( { destination:this.config.fileName }, ( err ) => {
-              if( err ) {
-                console.log( `${ this.archive }: Error while downloading for file exist in storage.` );
-                this.callback( err, null );
-              } else {
-                this.readFromFile();
-              }
+      var file = storage.file( this.config.fileName );
 
-            });
-          } else {
-            this.updateFromDataStore( {} );
-          }
-        });
+      file.exists( ( err, exists ) => {
+        if( err ) {
+          console.log( `${ this.archive }: Error while checking for file exist in storage.` );
+          this.callback( err, null );
+        } else if( exists ) {
+          console.log( `${ this.archive }: Downloading archive from GCS ...` );
+          file.download( { destination:this.config.fileName }, ( err ) => {
+            if( err ) {
+              console.log( `${ this.archive }: Error while downloading for file exist in storage.` );
+              this.callback( err, null );
+            } else {
+              this.readFromFile();
+            }
 
-      }
-    } catch( error ) {
-      console.log( `${ this.archive }: Error while run.` );
+          });
+        } else {
+          this.updateFromDataStore( {} );
+        }
+      });
+
     }
+
   }
 
 

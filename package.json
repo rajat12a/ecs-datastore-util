@@ -6,7 +6,7 @@
   "license": "ISC",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js --trace-warnings"
   },
   "dependencies": {
     "uuid": "^3.0.1",
