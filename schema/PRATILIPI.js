@@ -12,7 +12,7 @@ module.exports = {
     PRATILIPI_TYPE:             { type: 'STRING',        'default': null      },
     CONTENT_TYPE:               { type: 'STRING',        'default': null      },
     STATE:                      { type: 'STRING',        'default': null      },
-    COVER_IMAGE:                { type: 'BOOLEAN',       'default': null      },
+    COVER_IMAGE:                { type: 'STRING',       'default': null      },
 
     LISTING_DATE:               { type: 'TIMESTAMP',     'default': null      },
     LAST_UPDATED:               { type: 'TIMESTAMP',     'default': null      },
