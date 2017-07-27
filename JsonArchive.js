@@ -32,7 +32,8 @@ class JsonArchive {
     } else {
 
       var file = storage.file( this.config.fileName );
-
+      console.log(`${ this.archive }: file for storage ${ file }`);
+      console.log(`${ this.archive }: file  stringify for storage ${ JSON.stringify( file ) }`);
       file.exists( ( err, exists ) => {
         if( err ) {
           console.log( `${ this.archive }: Error while checking for file exist in storage.` );
@@ -49,6 +50,7 @@ class JsonArchive {
 
           });
         } else {
+          console.log(`${ this.archive }: File doesn't exist in Storage.`)
           this.updateFromDataStore( {} );
         }
       });
