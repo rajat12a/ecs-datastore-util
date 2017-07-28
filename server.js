@@ -72,11 +72,14 @@ const bigqueryConfig = {
     var archive = archives[ i ];
     var config = archiveConfig[ archive ];
 
+    console.log(`RUN: before run ${archive}: ${config}`);
+
     if( config.nextRun > new Date().getTime() ) {
       continue;
     }
 
     var callback = ( err, updateCount ) => {
+      console.log(`RUN: after run in callback ${archive}: ${config}`);
       if( err ) {
         console.error( archive + ": " + String( err ) );
       } else {
@@ -87,13 +90,16 @@ const bigqueryConfig = {
         }
       }
       config.nextRun = new Date().getTime() + config.timeInt * 1000;
+      console.log(`RUN: executing again.`);
       run();
     };
 
+    console.log(`${archive}: Taking Backup`);
     return jsonArchive.run( archive, config, callback );
 
   }
 
+  console.log(`RUN: All Backups Complete. Starting again after 5 seconds`);
   setTimeout( run, 5 * 1000 );
 
 })();
@@ -106,11 +112,14 @@ const bigqueryConfig = {
     var bigQuery = bigQueries[ i ];
     var config = bigqueryConfig[ bigQuery ];
 
+    console.log(`bigQueryRUN: before run ${bigQuery}: ${config}`);
+
     if( config.nextRun > new Date().getTime() ) {
       continue;
     }
 
     var callback = ( err, updateCount ) => {
+      console.log(`bigQueryRUN: after run in callback ${bigQuery}: ${config}`);
       if( err ) {
         console.error( bigQuery + ": " + String( err ) );
       } else {
@@ -121,11 +130,14 @@ const bigqueryConfig = {
         }
       }
       config.nextRun = new Date().getTime() + config.timeInt * 1000;
+      console.log(`bigQueryRUN: executing again.`);
       bigQueryRun();
       };
 
+    console.log(`${bigQuery}: Taking Backup`);
     return bigqueryArchive.run( bigQuery, config, callback );
   }
 
+  console.log(`bigQueryRUN: All Backups Complete. Starting again after 5 seconds`);
   setTimeout( bigQueryRun, 5 * 1000 );
 } )();

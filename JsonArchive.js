@@ -27,9 +27,11 @@ class JsonArchive {
 
     if( fs.existsSync( this.config.fileName ) ) {
 
+      console.log(`${this.archive}: File exists locally.`);
       this.readFromFile();
 
     } else {
+      console.log(`${this.archive}: File doesn't exist locally. Checking storage`);
 
       var file = storage.file( this.config.fileName );
 
@@ -38,17 +40,20 @@ class JsonArchive {
           console.log( `${ this.archive }: Error while checking for file exist in storage.` );
           this.callback( err, null );
         } else if( exists ) {
+          console.log(`${this.archive}: File exists in storage.`);
           console.log( `${ this.archive }: Downloading archive from GCS ...` );
           file.download( { destination:this.config.fileName }, ( err ) => {
             if( err ) {
-              console.log( `${ this.archive }: Error while downloading for file exist in storage.` );
+              console.log( `${ this.archive }: Error while downloading for file in storage.` );
               this.callback( err, null );
             } else {
+              console.log(`${this.archive}: File Downloaded from storage to local.`);
               this.readFromFile();
             }
 
           });
         } else {
+          console.log(`${this.archive}: File doesn't exist in storage. Calling Datastore.`);
           this.updateFromDataStore( {} );
         }
       });
@@ -63,6 +68,7 @@ class JsonArchive {
     var entities = {};
     var minValue = '';
 
+    console.log(`${this.archive}: Reading Local File.`);
     readline.createInterface({
       input: fs.createReadStream( this.config.fileName, { encoding: 'utf8' } )
     }).on( 'line', ( line ) => {
@@ -82,6 +88,7 @@ class JsonArchive {
 
   updateFromDataStore( entities ) {
 
+    console.log(`${this.archive}: Querying.`);
     var filter = [];
     filter.push([ this.config.sortBy, '>=', this.config.minValue ]);
     if( this.config.maxValue != null ) {
@@ -116,9 +123,10 @@ class JsonArchive {
 
   writeToFile( entities, updateCount ) {
 
+    console.log( `${ this.archive }: Writing to FS & GCS ...` );
     if( updateCount === this.config.batchSize && this.boost > 1 ) {
       this.boost--;
-      console.log( `${ this.archive }: Bosting ... ${ this.boost }` );
+      console.log( `${ this.archive }: Boosting ... ${ this.boost }` );
       this.updateFromDataStore( entities );
       return;
     }
