@@ -170,18 +170,18 @@ class JsonArchive {
         '-' + (hour < 10 ? '0' + hour : hour) +
         ':' + (min < 10 ? '0' + min : min);
 
-    // Must wait for some time before making a copy as the object is not immediately available
-    setTimeout( () => {
-      storage.file( this.config.fileName ).copy( this.config.fileName + '/' + timeStampStr );
-    }, 60000 ); // 60 seconds
-
     wStream.on('finish', () => {
       console.log(`${ this.archive }: All local file writes are now complete.`);
     });
     gcsStream.on('finish', () => {
-     console.log(`${ this.archive }: All storage file writes are now complete.`);
+      console.log(`${ this.archive }: All storage file writes are now complete.`);
+      // Must wait for some time before making a copy as the object is not immediately available
+      setTimeout( () => {
+        storage.file( this.config.fileName ).copy( this.config.fileName + '/' + timeStampStr );
+      }, 60000 ); // 60 seconds
+
+      this.callback( null, updateCount );
     });
-    this.callback( null, updateCount );
 
   }
 
