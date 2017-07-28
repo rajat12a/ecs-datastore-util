@@ -146,7 +146,7 @@ class JsonArchive {
       gcsStream.write( str + '\n' );
     });
     wStream.on('error', (error) => {
-      console.log(`${ this.archive }: error local file write. ${error}`;
+      console.log(`${ this.archive }: error local file write. ${error}`);
     });
     gcsStream.on('error', (error) => {
      console.log(`${ this.archive }: error storage file write. ${error}`);
