@@ -183,8 +183,8 @@ class JsonArchive {
           } else {
             console.log(`: Copied file in storage. apiResponse is ${JSON.stringify(apiResponse,null,4)}`);
           }
+          this.callback( null, updateCount );
         });
-        this.callback( null, updateCount );
       }, 60000 ); // 60 seconds
 
     });
