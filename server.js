@@ -72,22 +72,14 @@ const bigqueryConfig = {
     var archive = archives[ i ];
     var config = archiveConfig[ archive ];
 
-<<<<<<< HEAD
     console.log(`RUN: before run ${archive}: ${JSON.stringify(config,null,4)}`);
-=======
-    console.log(`RUN: before run ${archive}: ${config}`);
->>>>>>> 574a2712faeebc224bae82493eff2d2a4ff97c3c
 
     if( config.nextRun > new Date().getTime() ) {
       continue;
     }
 
     var callback = ( err, updateCount ) => {
-<<<<<<< HEAD
       console.log(`RUN: after run in callback ${archive}: ${JSON.stringify(config,null,4)}`);
-=======
-      console.log(`RUN: after run in callback ${archive}: ${config}`);
->>>>>>> 574a2712faeebc224bae82493eff2d2a4ff97c3c
       if( err ) {
         console.error( archive + ": " + String( err ) );
       } else {
