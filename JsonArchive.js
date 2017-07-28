@@ -177,7 +177,13 @@ class JsonArchive {
       console.log(`${ this.archive }: All storage file writes are now complete.`);
       // Must wait for some time before making a copy as the object is not immediately available
       setTimeout( () => {
-        storage.file( this.config.fileName ).copy( this.config.fileName + '/' + timeStampStr );
+        storage.file( this.config.fileName ).copy( this.config.fileName + '/' + timeStampStr, function(err, copiedFile, apiResponse) {
+          if( err ) {
+            console.error(`${ this.archive }: Error while copying file in storage.`);
+          } else {
+            console.log(`${ this.archive }: Copied file in storage.`);
+          }
+        }) );
       }, 60000 ); // 60 seconds
 
       this.callback( null, updateCount );
