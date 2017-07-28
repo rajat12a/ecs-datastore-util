@@ -72,14 +72,14 @@ const bigqueryConfig = {
     var archive = archives[ i ];
     var config = archiveConfig[ archive ];
 
-    console.log(`RUN: before run ${archive}: ${JSON.stringify(config,null,4)}`);
+    console.log(`RUN: before run ${archive}: ${config.nextRun} : ${config.timeInt}`);
 
     if( config.nextRun > new Date().getTime() ) {
       continue;
     }
 
     var callback = ( err, updateCount ) => {
-      console.log(`RUN: after run in callback ${archive}: ${JSON.stringify(config,null,4)}`);
+      console.log(`RUN: after run in callback ${archive}: ${config.nextRun} : ${config.timeInt}`);
       if( err ) {
         console.error( archive + ": " + String( err ) );
       } else {
@@ -112,14 +112,14 @@ const bigqueryConfig = {
     var bigQuery = bigQueries[ i ];
     var config = bigqueryConfig[ bigQuery ];
 
-    console.log(`bigQueryRUN: before run ${bigQuery}: ${JSON.stringify(config,null,4)}`);
+    console.log(`bigQueryRUN: before run ${bigQuery}: ${config.nextRun} : ${config.timeInt}`);
 
     if( config.nextRun > new Date().getTime() ) {
       continue;
     }
 
     var callback = ( err, updateCount ) => {
-      console.log(`bigQueryRUN: after run in callback ${bigQuery}: ${JSON.stringify(config,null,4)}`);
+      console.log(`bigQueryRUN: after run in callback ${bigQuery}: ${config.nextRun} : ${config.timeInt}`);
       if( err ) {
         console.error( bigQuery + ": " + String( err ) );
       } else {
