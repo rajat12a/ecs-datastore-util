@@ -179,9 +179,9 @@ class JsonArchive {
       setTimeout( () => {
         storage.file( this.config.fileName ).copy( this.config.fileName + '/' + timeStampStr, function(err, copiedFile, apiResponse) {
           if( err ) {
-            console.error(`${ this.archive }: Error while copying file in storage.`);
+            console.error(`: Error while copying file in storage.`);
           } else {
-            console.log(`${ this.archive }: Copied file in storage.`);
+            console.log(`: Copied file in storage.`);
           }
         });
       }, 60000 ); // 60 seconds
