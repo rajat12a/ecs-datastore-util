@@ -183,7 +183,7 @@ class JsonArchive {
           } else {
             console.log(`${ this.archive }: Copied file in storage.`);
           }
-        }) );
+        });
       }, 60000 ); // 60 seconds
 
       this.callback( null, updateCount );
