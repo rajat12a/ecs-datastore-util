@@ -145,7 +145,12 @@ class JsonArchive {
       wStream.write( str + '\n' );
       gcsStream.write( str + '\n' );
     });
-
+    wStream.on('error', (error) => {
+      console.log(`${ this.archive }: error local file write. ${error}`;
+    });
+    gcsStream.on('error', (error) => {
+     console.log(`${ this.archive }: error storage file write. ${error}`);
+    });
     wStream.end();
     gcsStream.end();
 
@@ -170,7 +175,12 @@ class JsonArchive {
       storage.file( this.config.fileName ).copy( this.config.fileName + '/' + timeStampStr );
     }, 60000 ); // 60 seconds
 
-
+    wStream.on('finish', () => {
+      console.log(`${ this.archive }: All local file writes are now complete.`);
+    });
+    gcsStream.on('finish', () => {
+     console.log(`${ this.archive }: All storage file writes are now complete.`);
+    });
     this.callback( null, updateCount );
 
   }
