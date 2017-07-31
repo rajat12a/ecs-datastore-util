@@ -123,7 +123,7 @@ const bigqueryConfig = {
       if( err ) {
         console.error( bigQuery + ": " + String( err ) );
       } else {
-        if( updateCount === config.batchSize ) {
+        if( ( updateCount + 1 ) === config.batchSize ) {
           config.timeInt = Math.max( config.minTimeInt, Math.ceil( config.timeInt / 2 ) );
         } else if( updateCount < config.minUpdate ) {
           config.timeInt = Math.min( config.maxTimeInt, config.timeInt * 2 );
