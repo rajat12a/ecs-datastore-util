@@ -5,7 +5,7 @@
         {
             "name": "$APP_NAME",
             "image": "$DOCKER_REPO/$APP_NAME:$APP_VERSION",
-            "cpu": 64,
+            "cpu": 256,
             "memoryReservation": 1024,
             "memory": 4096,
             "essential": true,
