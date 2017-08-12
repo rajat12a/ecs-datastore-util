@@ -5,8 +5,9 @@
         {
             "name": "$APP_NAME",
             "image": "$DOCKER_REPO/$APP_NAME:$APP_VERSION",
-            "cpu": 1536,
-            "memoryReservation": 3072,
+            "cpu": 64,
+            "memoryReservation": 256,
+            "memory": 2048,
             "essential": true,
             "logConfiguration": {
                 "logDriver": "awslogs",
