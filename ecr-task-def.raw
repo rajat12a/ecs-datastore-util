@@ -20,7 +20,7 @@
     ],
     "placementConstraints": [
         {
-            "expression": "attribute:instance-category-devops == true",
+            "expression": "attribute:instance-category-default == true",
             "type": "memberOf"
         }
     ]
