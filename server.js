@@ -50,6 +50,11 @@ const archiveConfig = {
       kind:'VOTE', schema:require( `./schema/VOTE.js` ), fileName:'VOTE',
       sortBy:'CREATION_DATE', minValue:new Date(0),
       batchSize:1000, minUpdate:1000,
+      timeInt:900, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:100 },
+  COMMENT:{
+      kind:'COMMENT', schema:require( `./schema/COMMENT.js` ), fileName:'COMMENT',
+      sortBy:'CREATION_DATE', minValue:new Date(0),
+      batchSize:1000, minUpdate:1000,
       timeInt:900, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:100 }
 };
 
