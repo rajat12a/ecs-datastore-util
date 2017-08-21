@@ -10,12 +10,12 @@ const datastoreClient = require( './lib/DbUtility.js' );
 var storage;
 var datastore;
 var s3 = new AWS.S3();
-
+var bucket;
 class JsonArchive {
 
   static init( config ) {
     storage = storageClient({ projectId: config.gcsProjectId }).bucket( config.gcsBucket );
-    this.bucket = config.gcsBucket;
+    bucket = config.gcsBucket;
     return this;
   }
 
@@ -184,7 +184,7 @@ class JsonArchive {
           console.log( `${ this.archive }: Uploading to AWS S3.` )
           var pass = fs.createReadStream( this.config.fileName )
           var params = {
-            Bucket: this.bucket,
+            Bucket: bucket,
             Key: this.config.fileName,
             Body: pass
           };
