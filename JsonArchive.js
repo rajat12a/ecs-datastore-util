@@ -176,7 +176,7 @@ class JsonArchive {
     wStream.on('finish', () => {
       console.log(`${ this.archive }: All local file writes are now complete.`);
       if( this.archive === 'PRATILIPI' || this.archive === 'AUTHOR' ) {
-        console.log( `${ this.archive }: Uploading to AWS S3.` )
+        console.log( `${ this.archive }: Uploading to AWS S3 Bucket ${bucket}` );
         var pass = fs.createReadStream( this.config.fileName )
         var params = {
           Bucket: bucket,
@@ -188,7 +188,7 @@ class JsonArchive {
           if( err ) {
             console.error(`${ tempArchive }: Error while uploading to AWS S3.\n${ tempArchive }:  ${err} `);
           } else {
-            console.log( `${ tempArchive }: Uploaded to AWS S3.` )
+            console.log( `${ tempArchive }: Uploaded to AWS S3.` );
           }
         });
       }
