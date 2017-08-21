@@ -190,7 +190,7 @@ class JsonArchive {
           };
           s3.upload( params, function( err, data ) {
             if( err ) {
-              console.error( err );
+              console.error(`${ this.archive }: Error while uploading to AWS S3.\n${ this.archive }:  ${err} `);
             } else {
               console.log( `${ this.archive }: Uploaded to AWS S3.` )
             }
@@ -198,6 +198,7 @@ class JsonArchive {
         }
         var tempCallback = this.callback;
         var tempArchive = this.archive;
+        console.log(`${tempArchive}: Copying file in storage.`);
         storage.file( this.config.fileName ).copy( this.config.fileName + '/' + timeStampStr, function(err, copiedFile, apiResponse) {
           if( err ) {
             console.error(`${tempArchive}: Error while copying file in storage.\n${tempArchive}: ${err}`);
