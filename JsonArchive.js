@@ -175,27 +175,28 @@ class JsonArchive {
 
     wStream.on('finish', () => {
       console.log(`${ this.archive }: All local file writes are now complete.`);
+      if( this.archive === 'PRATILIPI' || this.archive === 'AUTHOR' ) {
+        console.log( `${ this.archive }: Uploading to AWS S3.` )
+        var pass = fs.createReadStream( this.config.fileName )
+        var params = {
+          Bucket: bucket,
+          Key: this.config.fileName,
+          Body: pass
+        };
+        var tempArchive = this.archive;
+        s3.upload( params, function( err, data ) {
+          if( err ) {
+            console.error(`${ tempArchive }: Error while uploading to AWS S3.\n${ tempArchive }:  ${err} `);
+          } else {
+            console.log( `${ tempArchive }: Uploaded to AWS S3.` )
+          }
+        });
+      }
     });
     gcsStream.on('finish', () => {
       console.log(`${ this.archive }: All storage file writes are now complete.`);
       // Must wait for some time before making a copy as the object is not immediately available
       setTimeout( () => {
-        if( this.archive === 'PRATILIPI' || this.archive === 'AUTHOR' ) {
-          console.log( `${ this.archive }: Uploading to AWS S3.` )
-          var pass = fs.createReadStream( this.config.fileName )
-          var params = {
-            Bucket: bucket,
-            Key: this.config.fileName,
-            Body: pass
-          };
-          s3.upload( params, function( err, data ) {
-            if( err ) {
-              console.error(`${ this.archive }: Error while uploading to AWS S3.\n${ this.archive }:  ${err} `);
-            } else {
-              console.log( `${ this.archive }: Uploaded to AWS S3.` )
-            }
-          });
-        }
         var tempCallback = this.callback;
         var tempArchive = this.archive;
         console.log(`${tempArchive}: Copying file in storage.`);
