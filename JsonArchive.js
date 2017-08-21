@@ -2,40 +2,20 @@ const fs = require( 'fs' );
 const readline = require( 'readline' );
 const http = require( 'http' );
 const time = require( 'time' );
-const AWS = require('aws-sdk');
+const AWS = require( 'aws-sdk' );
 
 
 const storageClient = require( '@google-cloud/storage' );
 const datastoreClient = require( './lib/DbUtility.js' );
 var storage;
 var datastore;
-var s3;
+var s3 = new AWS.S3();
 
 class JsonArchive {
 
   static init( config ) {
     storage = storageClient({ projectId: config.gcsProjectId }).bucket( config.gcsBucket );
     this.bucket = config.gcsBucket;
-    s3 = new AWS.S3();
-    var params = {
-      Bucket: this.bucket
-    };
-    s3.headBucket( params, function( err, data ) {
-      if ( err ) {
-        console.error( err, err.stack );  // an error occurred
-        var createParams = {
-          Bucket: this.bucket,
-          CreateBucketConfiguration: {
-            LocationConstraint: "ap-southeast-1"
-          }
-        };
-        s3.createBucket( createParams, function( err, data ) {
-          if ( err ) {
-            console.error( err, err.stack );  // an error occurred
-          }
-        } );
-      }
-    } );
     return this;
   }
 
