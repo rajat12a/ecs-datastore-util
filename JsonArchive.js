@@ -2,17 +2,40 @@ const fs = require( 'fs' );
 const readline = require( 'readline' );
 const http = require( 'http' );
 const time = require( 'time' );
+const AWS = require('aws-sdk');
+
 
 const storageClient = require( '@google-cloud/storage' );
 const datastoreClient = require( './lib/DbUtility.js' );
 var storage;
 var datastore;
-
+var s3;
 
 class JsonArchive {
 
   static init( config ) {
     storage = storageClient({ projectId: config.gcsProjectId }).bucket( config.gcsBucket );
+    this.bucket = config.gcsBucket;
+    s3 = new AWS.S3();
+    var params = {
+      Bucket: this.bucket
+    };
+    s3.headBucket( params, function( err, data ) {
+      if ( err ) {
+        console.error( err, err.stack );  // an error occurred
+        var createParams = {
+          Bucket: this.bucket,
+          CreateBucketConfiguration: {
+            LocationConstraint: "ap-southeast-1"
+          }
+        };
+        s3.createBucket( createParams, function( err, data ) {
+          if ( err ) {
+            console.error( err, err.stack );  // an error occurred
+          }
+        } );
+      }
+    } );
     return this;
   }
 
@@ -177,6 +200,22 @@ class JsonArchive {
       console.log(`${ this.archive }: All storage file writes are now complete.`);
       // Must wait for some time before making a copy as the object is not immediately available
       setTimeout( () => {
+        if( this.archive === 'PRATILIPI' || this.archive === 'AUTHOR' ) {
+          console.log( `${ this.archive }: Uploading to AWS S3.` )
+          var pass = fs.createReadStream( this.config.fileName )
+          var params = {
+            Bucket: this.bucket,
+            Key: this.config.fileName,
+            Body: pass
+          };
+          s3.upload( params, function( err, data ) {
+            if( err ) {
+              console.error( err );
+            } else {
+              console.log( `${ this.archive }: Uploaded to AWS S3.` )
+            }
+          });
+        }
         var tempCallback = this.callback;
         var tempArchive = this.archive;
         storage.file( this.config.fileName ).copy( this.config.fileName + '/' + timeStampStr, function(err, copiedFile, apiResponse) {
