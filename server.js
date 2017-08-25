@@ -25,7 +25,7 @@ const archiveConfig = {
       kind:'AUTHOR', schema:require( `./schema/AUTHOR.js` ), fileName:'AUTHOR',
       sortBy:'_TIMESTAMP_', minValue:new Date(0),
       batchSize:1000, minUpdate: 100,
-      timeInt:5, minTimeInt:300, maxTimeInt: 900, nextRun:0, boost: 10 },
+      timeInt:900, minTimeInt:300, maxTimeInt: 900, nextRun:0, boost: 10 },
   PRATILIPI:{
       kind:'PRATILIPI', schema:require( `./schema/PRATILIPI.js` ), fileName:'PRATILIPI',
       sortBy:'_TIMESTAMP_', minValue:new Date(0),
