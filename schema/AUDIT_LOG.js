@@ -10,7 +10,9 @@ module.exports = {
     EVENT_DATA_OLD:		  { type: 'STRING',    default: null },
     EVENT_DATA_NEW:		  { type: 'STRING',    default: null },
     EVENT_COMMENT:		  { type: 'STRING',    default: null },
-    CREATION_DATE:		  { type: 'TIMESTAMP', default: null }
+    CREATION_DATE:		  { type: 'TIMESTAMP', default: null },
+    CLIENT_TYPE:		  { type: 'STRING',    default: null },
+    CLIENT_VERSION:		  { type: 'STRING',    default: null }
 
   },
   primaryKey : 'AUDIT_LOG_ID'
