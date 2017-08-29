@@ -101,15 +101,15 @@ class JsonArchive {
         };
         var tempArchive = this.archive;
         var tempCallback = this.callback;
-	var startTime = this.startTime;
+	      var startTime = this.startTime;
         s3.upload( params, function( err, data ) {
           if( err ) {
             console.error(`${ tempArchive }: Error while uploading to AWS S3.\n${ tempArchive }:  ${err} `);
           } else {
             console.log( `${ tempArchive }: Uploaded to AWS S3.` );
           }
-	  var diff = Date.now() - startTime;
-          console.log( `${tempArchive }: ${diff}ms or ${diff/1000}sec or ${diff/60000 }` );
+	        var diff = Date.now() - startTime;
+          console.log( `${tempArchive }: Completed in ${diff}milliseconds or ${diff/1000}seconds or ${diff/60000 }minutes` );
           tempCallback(null,updateCount);
         });
       });
