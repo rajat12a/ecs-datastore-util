@@ -47,7 +47,7 @@ var archives = Object.keys( archiveConfig );
 for( var i = 0; i < archives.length; i++ ) {
   (function run() {
     var archive = archives[ i ];
-    var config = archiveConfig[ archive ];
+    var config = JSON.parse(JSON.stringify(archiveConfig[ archive ]));
     var callback = ( err, updateCount ) => {
       if( err ) {
         console.error( "RUN: " + String( err ) );
@@ -57,11 +57,10 @@ for( var i = 0; i < archives.length; i++ ) {
     };
     if( archive === 'USER_AUTHOR' || archive === 'USER_PRATILIPI' ) {
       for( var j = 40; j < 80; j++ ) {
-        var fileName = config.fileName;
-        var configSplit = config;
+        var configSplit = JSON.parse(JSON.stringify(config));
         configSplit.minValue = "" + j;
         configSplit.maxValue = "" + ( j + 1 );
-        configSplit.fileName = fileName + `_${configSplit.minValue}_${configSplit.maxValue}`;
+        configSplit.fileName = configSplit.fileName + `_${configSplit.minValue}_${configSplit.maxValue}`;
         var jsonArchive = new JsonArchive();
         console.log(`${archive + '_' + configSplit.minValue + '_' + configSplit.maxValue}: Taking Backup`);
         jsonArchive.run( (archive + '_' + configSplit.minValue + '_' + configSplit.maxValue), configSplit, callback );
