@@ -12,14 +12,13 @@ class JsonArchive {
 
 
   run( archive, config, callback ) {
-
+    this.startTime = Date.now();
     this.archive = archive;
     this.config = config;
     this.callback = callback;
     this.datastore = datastoreClient({ projectId:'prod-pratilipi', kind:config.kind, schema:config.schema });
     this.boost = config.boost;
 
-    
     console.log(`${this.archive}: Calling Datastore.`);
     this.updateFromDataStore( {} );
   }
@@ -32,7 +31,6 @@ class JsonArchive {
     if( this.config.maxValue != null ) {
       filter.push([ this.config.sortBy, '<', this.config.maxValue ]);
     }
-    // console.log(`${ this.archive }: ${JSON.stringify(datastore)}\n${JSON.stringify(filter)}`);
     this.datastore.query( filter, null, null, this.config.batchSize, null, null ).then( ( updates ) => {
       console.log( `${ this.archive }: Found ${ updates.data.length } new additions/updations.` );
       if( updates.data.length < 1 ) {
@@ -55,7 +53,7 @@ class JsonArchive {
 
   writeToFile( entities, updateCount ) {
 
-    console.log( `${ this.archive }: Writing to FS & GCS ...` );
+    console.log( `${ this.archive }: Writing to FS ...` );
     if( updateCount === this.config.batchSize && this.boost > 1 ) {
       this.boost--;
       console.log( `${ this.archive }: Boosting ... ${ this.boost }` );
@@ -96,18 +94,21 @@ class JsonArchive {
         console.log( `${ this.archive }: Uploading to AWS S3 Bucket test-rajat2` );
         var pass = fs.createReadStream( `${this.config.fileName}.tar.gz` )
         var params = {
-          Bucket: 'test-rajat2',
+          Bucket: 'datastore-archive',
           Key: `${this.config.fileName}.tar.gz`,
           Body: pass
         };
         var tempArchive = this.archive;
         var tempCallback = this.callback;
+	var startTime = this.startTime;
         s3.upload( params, function( err, data ) {
           if( err ) {
             console.error(`${ tempArchive }: Error while uploading to AWS S3.\n${ tempArchive }:  ${err} `);
           } else {
             console.log( `${ tempArchive }: Uploaded to AWS S3.` );
           }
+	  var diff = Date.now() - startTime;
+          console.log( `${tempArchive }: ${diff}ms or ${diff/1000}sec or ${diff/60000 }` );
           tempCallback(null,updateCount);
         });
       });
