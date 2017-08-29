@@ -71,7 +71,8 @@ class JsonArchive {
     console.log( `${ this.archive }: Writing ${ Object.keys( entities ).length } entities with ${ updateCount } updates to FS & GCS ...` );
 
     Object.values( entities ).forEach( (json) => {
-      var str = this.jsonToString( json,keys );
+      var str = JSON.parse( JSON.stringify(json) );
+      str = this.jsonToString( str,keys );
       wStream.write( str );
     });
     wStream.on('error', (error) => {

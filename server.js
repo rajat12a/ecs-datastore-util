@@ -3,7 +3,7 @@ const JsonArchive = require( './JsonArchive.js' );
 const archiveConfig = {
   USER_AUTHOR:{
       kind:'USER_AUTHOR', schema:require( `./schema/USER_AUTHOR.js` ), fileName:'USER_AUTHOR',
-      sortBy:'USER_AUTHOR_ID', minValue:'0',
+      sortBy:'USER_AUTHOR_ID',
       batchSize:1000, minUpdate:1000,
       timeInt:900, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:1000000 },
   USER_PRATILIPI_0_4:{
@@ -46,10 +46,8 @@ const archiveConfig = {
 var archives = Object.keys( archiveConfig );
 for( var i = 0; i < archives.length; i++ ) {
   (function run() {
-    var jsonArchive = new JsonArchive();
     var archive = archives[ i ];
     var config = archiveConfig[ archive ];
-
     var callback = ( err, updateCount ) => {
       if( err ) {
         console.error( "RUN: " + String( err ) );
@@ -57,8 +55,21 @@ for( var i = 0; i < archives.length; i++ ) {
         console.log(`RUN: complete`);
       }
     };
-
-    console.log(`${archive}: Taking Backup`);
-    jsonArchive.run( archive, config, callback );
+    if( archive === 'USER_AUTHOR' || archive === 'USER_PRATILIPI' ) {
+      for( var j = 40; j < 80; j++ ) {
+        var fileName = config.fileName;
+        var configSplit = config;
+        configSplit.minValue = "" + j;
+        configSplit.maxValue = "" + ( j + 1 );
+        configSplit.fileName = fileName + `_${configSplit.minValue}_${configSplit.maxValue}`;
+        var jsonArchive = new JsonArchive();
+        console.log(`${archive + '_' + configSplit.minValue + '_' + configSplit.maxValue}: Taking Backup`);
+        jsonArchive.run( (archive + '_' + configSplit.minValue + '_' + configSplit.maxValue), configSplit, callback );
+      }
+    } else {
+      var jsonArchive = new JsonArchive();
+      console.log(`${archive}: Taking Backup`);
+      jsonArchive.run( archive, config, callback );
+    }
   })();
 }
