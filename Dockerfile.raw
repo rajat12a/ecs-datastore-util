@@ -1,4 +1,4 @@
-from $DOCKER_REPO/node:8.0.0
+from $DOCKER_REPO/node:8.3.0
 
 COPY package.json .
 RUN npm install
