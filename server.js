@@ -71,7 +71,7 @@ const bigqueryConfig = {
     var callback = ( err, updateCount ) => {
       console.log(`RUN: after run in callback ${archive}: ${config.nextRun} : ${config.timeInt}`);
       if( err ) {
-        console.error( archive + ": " + String( err ) );
+        console.error( archive + ": " + JSON.stringify( err ) );
       } else {
         if( updateCount >= config.batchSize ) {
           config.timeInt = Math.max( config.minTimeInt, Math.ceil( config.timeInt / 2 ) );
@@ -111,7 +111,7 @@ const bigqueryConfig = {
     var callback = ( err, updateCount ) => {
       console.log(`bigQueryRUN: after run in callback ${bigQuery}: ${config.nextRun} : ${config.timeInt}`);
       if( err ) {
-        console.error( bigQuery + ": " + String( err ) );
+        console.error( bigQuery + ": " + JSON.stringify( err ) );
       } else {
         if( ( updateCount + 1 ) === config.batchSize ) {
           config.timeInt = Math.max( config.minTimeInt, Math.ceil( config.timeInt / 2 ) );
