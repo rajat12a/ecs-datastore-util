@@ -46,8 +46,8 @@ const bigqueryConfig = {
     lastValue:null,
     batchSize:500,
     minUpdate:100,
-    timeInt:60,
-    minTimeInt:60,
+    timeInt:15,
+    minTimeInt:15,
     maxTimeInt:900,
     nextRun:0
   }
