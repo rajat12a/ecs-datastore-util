@@ -91,10 +91,10 @@ class BigqueryArchive {
           err.errors.forEach( ( err1 ) => {
             err1.errors.forEach( ( err2 ) => {
               if( err2.reason !== 'stopped' ) {
-                console.error( String( err1.row ) );
-                console.error( String( err2.reason ) );
-                console.error( String( err2.debugInfo ) );
-                console.error( String( err2.message ) );
+                console.error( JSON.stringify( err1.row ) );
+                console.error( JSON.stringify( err2.reason ) );
+                console.error( JSON.stringify( err2.debugInfo ) );
+                console.error( JSON.stringify( err2.message ) );
               }
             });
           });
