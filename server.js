@@ -44,7 +44,7 @@ const bigqueryConfig = {
     schema:require( `./schema/AUDIT_LOG.js` ),
     sortBy:'CREATION_DATE',
     lastValue:null,
-    batchSize:1000,
+    batchSize:100,
     minUpdate:100,
     timeInt:60,
     minTimeInt:60,
