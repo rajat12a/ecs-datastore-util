@@ -8,7 +8,6 @@ const AWS = require( 'aws-sdk' );
 const storageClient = require( '@google-cloud/storage' );
 const datastoreClient = require( './lib/DbUtility.js' );
 var storage;
-var datastore;
 var s3 = new AWS.S3();
 var bucket;
 class JsonArchive {
@@ -25,7 +24,7 @@ class JsonArchive {
     this.archive = archive;
     this.config = config;
     this.callback = callback;
-    datastore = datastoreClient({ projectId:process.env.GCP_PROJ_ID, kind:config.kind, schema:config.schema });
+    this.datastore = datastoreClient({ projectId:process.env.GCP_PROJ_ID, kind:config.kind, schema:config.schema });
     this.boost = config.boost;
 
     if( fs.existsSync( this.config.fileName ) ) {
@@ -99,7 +98,7 @@ class JsonArchive {
     }
     var orderBy = [ this.config.sortBy ];
 
-    datastore.query( filter, null, null, this.config.batchSize, orderBy ).then( ( updates ) => {
+    this.datastore.query( filter, null, null, this.config.batchSize, orderBy ).then( ( updates ) => {
       console.log( `${ this.archive }: Found ${ updates.data.length } new additions/updations.` );
       if( updates.data.length <= 1 ) {
         this.callback( null, updates.data.length );
@@ -118,6 +117,7 @@ class JsonArchive {
         this.writeToFile( entities, updates.data.length );
       }
     }).catch( ( err ) => {
+      console.error(`${ this.archive }: Error while querying on datastore.`);
       this.callback( err, null );
     });
 
@@ -148,11 +148,13 @@ class JsonArchive {
       wStream.write( str + '\n' );
       gcsStream.write( str + '\n' );
     });
-    wStream.on('error', (error) => {
-      console.log(`${ this.archive }: error local file write. ${error}`);
+    wStream.on('error', (err) => {
+      console.log(`${ this.archive }: Error local file write.`);
+      this.callback( err, null );
     });
-    gcsStream.on('error', (error) => {
-     console.log(`${ this.archive }: error storage file write. ${error}`);
+    gcsStream.on('error', (err) => {
+      console.log(`${ this.archive }: Error storage file write.`);
+      this.callback( err, null );
     });
     wStream.end();
     gcsStream.end();
@@ -186,7 +188,7 @@ class JsonArchive {
         var tempArchive = this.archive;
         s3.upload( params, function( err, data ) {
           if( err ) {
-            console.error(`${ tempArchive }: Error while uploading to AWS S3.\n${ tempArchive }:  ${err} `);
+            console.error(`${ tempArchive }: Error while uploading to AWS S3.\n${ tempArchive }:  ${String(err)} `);
           } else {
             console.log( `${ tempArchive }: Uploaded to AWS S3.` );
           }
@@ -202,7 +204,7 @@ class JsonArchive {
         console.log(`${tempArchive}: Copying file in storage.`);
         storage.file( this.config.fileName ).copy( this.config.fileName + '/' + timeStampStr, function(err, copiedFile, apiResponse) {
           if( err ) {
-            console.error(`${tempArchive}: Error while copying file in storage.\n${tempArchive}: ${err}`);
+            console.error(`${tempArchive}: Error while copying file in storage.\n${tempArchive}: ${String(err)}`);
           } else {
             console.log(`${tempArchive}: Copied file in storage.`);
           }

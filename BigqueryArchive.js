@@ -1,7 +1,6 @@
 const bigqueryClient = require( '@google-cloud/bigquery' );
 const datastoreClient = require( './lib/DbUtility.js' );
 
-var datastore;
 var bigquery;
 
 const http = require( 'http' );
@@ -20,7 +19,7 @@ class BigqueryArchive {
     this.config = config;
     this.callback = callback;
     this.schema = config.schema;
-    datastore = datastoreClient({ projectId:process.env.GCP_PROJ_ID, kind:this.kind, schema:this.schema });
+    this.datastore = datastoreClient({ projectId:process.env.GCP_PROJ_ID, kind:this.kind, schema:this.schema });
 
     if( this.config.lastValue != null ) {
       this.updateBigqueryFromDatastore();
@@ -57,7 +56,7 @@ class BigqueryArchive {
     }
     var orderBy = [ this.config.sortBy ];
 
-    datastore.query( filter, null, null, this.config.batchSize, orderBy ).then( ( updates ) => {
+    this.datastore.query( filter, null, null, this.config.batchSize, orderBy ).then( ( updates ) => {
       console.log( `${ this.kind }: Found ${ updates.data.length } new additions/updations.` );
       if( updates.data.length <= 1 ) {
         this.callback( null, updates.data.length );
@@ -92,10 +91,10 @@ class BigqueryArchive {
           err.errors.forEach( ( err1 ) => {
             err1.errors.forEach( ( err2 ) => {
               if( err2.reason !== 'stopped' ) {
-                console.error( JSON.stringify( err1.row ) );
-                console.error( err2.reason );
-                console.error( err2.debugInfo );
-                console.error( err2.message );
+                console.error( String( err1.row ) );
+                console.error( String( err2.reason ) );
+                console.error( String( err2.debugInfo ) );
+                console.error( String( err2.message ) );
               }
             });
           });
