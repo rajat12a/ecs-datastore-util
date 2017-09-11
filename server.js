@@ -23,7 +23,7 @@ const archiveConfig = {
       timeInt:900, minTimeInt:300, maxTimeInt: 900, nextRun:0, boost: 10 },
   AUTHOR:{
       kind:'AUTHOR', schema:require( `./schema/AUTHOR.js` ), fileName:'AUTHOR',
-      sortBy:'_TIMESTAMP_', minValue:new Date(0),
+      sortBy:'LAST_UPDATED', minValue:new Date(0),
       batchSize:1000, minUpdate: 100,
       timeInt:900, minTimeInt:300, maxTimeInt: 900, nextRun:0, boost: 10 },
   PRATILIPI:{
