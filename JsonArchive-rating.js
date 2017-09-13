@@ -74,7 +74,7 @@ class JsonArchive {
 	  
     Object.values( entities ).forEach( (json) => {
      var str = JSON.parse( JSON.stringify(json) );
-     str = this.jsonToString( json,keys );
+     str = this.jsonToString( str,keys );
       wStream.write( str );
     });
     wStream.on('error', (error) => {
