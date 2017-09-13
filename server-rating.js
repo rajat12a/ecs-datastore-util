@@ -1,4 +1,4 @@
-const JsonArchive = require( './JsonArchive.js' );
+const JsonArchive = require( './JsonArchive-rating.js' );
 
 const archiveConfig = {
 //  USER_AUTHOR:{
@@ -13,7 +13,7 @@ const archiveConfig = {
   //     timeInt:900, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:1000000 },
   // USER_PRATILIPI_4_5:{
   //     kind:'USER_PRATILIPI', schema:require( `./schema/USER_PRATILIPI.js` ), fileName:'USER_PRATILIPI_4_5',
-  //     sortBy:'USER_PRATILIPI_ID', minValue:'4', maxValue:'5',
+  //     sortBy:'USER_PRATILIPI_ID', minValue: maxValue:'5',
   //     batchSize:1000, minUpdate:1000,
   //     timeInt:900, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:1000000 },
   // USER_PRATILIPI_5_6:{
@@ -31,21 +31,21 @@ const archiveConfig = {
   //     sortBy:'USER_PRATILIPI_ID', minValue:'7', maxValue:'9',
   //     batchSize:1000, minUpdate:1000,
   //     timeInt:900, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:1000000 },
-//   USER_PRATILIPI_REVIEW:{
-//    kind:'USER_PRATILIPI', schema:require( `./schema/USER_PRATILIPI.js` ), fileName:'USER_PRATILIPI/USER_PRATILIPI_REVIEW',
-//      sortBy:'USER_PRATILIPI_ID', minValue:'0',
+   USER_PRATILIPI_RATING:{
+    kind:'USER_PRATILIPI', schema:require( `./schema/USER_PRATILIPI.js` ), fileName:'USER_PRATILIPI/USER_PRATILIPI_RATING',
+      sortBy:'USER_PRATILIPI_ID', minValue:'0',
+      batchSize:1000, minUpdate:1000,
+      timeInt:900, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:1000000 }//,
+//   VOTE:{
+//      kind:'VOTE', schema:require( `./schema/VOTE.js` ), fileName:'VOTE',
+//      sortBy:'VOTE_ID', minValue:'0',
 //      batchSize:1000, minUpdate:1000,
-//      timeInt:900, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:1000000 }//,
-   VOTE:{
-      kind:'VOTE', schema:require( `./schema/VOTE.js` ), fileName:'VOTE',
-      sortBy:'VOTE_ID', minValue:'0',
-      batchSize:1000, minUpdate:1000,
-      timeInt:900, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:1000000 },
-   COMMENT:{
-      kind:'COMMENT', schema:require( `./schema/COMMENT.js` ), fileName:'COMMENT',
-      sortBy:'COMMENT_ID', minValue:1,
-      batchSize:1000, minUpdate:1000,
-      timeInt:900, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:1000000 }
+//      timeInt:900, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:1000000 },
+//   COMMENT:{
+//      kind:'COMMENT', schema:require( `./schema/COMMENT.js` ), fileName:'COMMENT',
+//      sortBy:'COMMENT_ID', minValue:1,
+//      batchSize:1000, minUpdate:1000,
+//      timeInt:900, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:1000000 }
 };
 
 var archives = Object.keys( archiveConfig );

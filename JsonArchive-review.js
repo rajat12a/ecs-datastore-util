@@ -16,7 +16,7 @@ class JsonArchive {
     this.callback = callback;
     this.datastore = datastoreClient({ projectId:'prod-pratilipi', kind:config.kind, schema:config.schema });
     this.boost = config.boost;
-    this.cursor = null;
+    this.cursor = '0';
     console.log(`${this.archive}: Calling Datastore.`);
     this.updateFromDataStore( {} );
   }
@@ -26,21 +26,21 @@ class JsonArchive {
     console.log(`${this.archive}: Querying.`);
     var filter = [];
 
-//    filter.push([ "REVIEW_DATE", '>', null ]);
-    filter.push([ this.config.sortBy, '>', this.config.minValue ]);
-    if( this.config.maxValue != null ) {
-      filter.push([ this.config.sortBy, '<', this.config.maxValue ]);
-    }
+    filter.push([ "REVIEW_DATE", '>', null ]);
+//    filter.push([ this.config.sortBy, '>', this.config.minValue ]);
+//    if( this.config.maxValue != null ) {
+//      filter.push([ this.config.sortBy, '<', this.config.maxValue ]);
+//    }
     this.datastore.query( filter, null, this.cursor, this.config.batchSize, null, null ).then( ( updates ) => {
       console.log( `${ this.archive }: Found ${ updates.data.length } new additions/updations.` );
       if( updates.data.length < 1 ) {
         this.callback( null, updates.data.length );
       } else {
-//	this.cursor = updates.endCursor;
+	this.cursor = updates.endCursor;
         updates.data.forEach( ( json ) => {
-          if( this.config.minValue < json[ this.config.sortBy ] ) {
-            this.config.minValue = json[ this.config.sortBy ];
-          }
+//          if( this.config.minValue < json[ this.config.sortBy ] ) {
+//            this.config.minValue = json[ this.config.sortBy ];
+//          }
           entities[ json[ this.config.schema.primaryKey ] ] = json;
         });
         this.writeToFile( entities, updates.data.length );
@@ -74,7 +74,7 @@ class JsonArchive {
 	  
     Object.values( entities ).forEach( (json) => {
      var str = JSON.parse( JSON.stringify(json) );
-     str = this.jsonToString( str,keys );
+     str = this.jsonToString( json,keys );
       wStream.write( str );
     });
     wStream.on('error', (error) => {

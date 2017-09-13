@@ -7,6 +7,7 @@ module.exports = {
     PARENT_ID:		{ type: 'STRING',    default: null },
     TYPE:		{ type: 'STRING',    default: null },
     CREATION_DATE:	{ type: 'TIMESTAMP', default: null },
+    LAST_UPDATED:	{ type: 'TIMESTAMP', default: null }
   },
   primaryKey : 'VOTE_ID'
 

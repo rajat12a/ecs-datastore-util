@@ -6,12 +6,15 @@
   "license": "ISC",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "vc": "node --max_old_space_size=15360 server.js > vc 2>&1",
+    "rating": "node --max_old_space_size=15360 server-rating.js > rating 2>&1",
+    "review": "node --max_old_space_size=15360 server-review.js > review 2>&1"
   },
   "dependencies": {
     "@google-cloud/datastore": "1.0.0",
     "aws-sdk": "2.100.0",
-    "tar": "4.0.1",
-    "csv-writer": "0.0.3"
+    "csv-writer": "0.0.3",
+    "json2csv": "^3.11.1",
+    "tar": "4.0.1"
   }
 }
