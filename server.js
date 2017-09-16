@@ -2,12 +2,12 @@ const JsonArchive = require( './JsonArchive.js' );
 
 const archiveConfig = {
    VOTE:{
-      kind:'VOTE', schema:require( `./schema/VOTE.js` ), fileName:'VOTE',
+      kind:'VOTE', schema:require( `./schema/VOTE.js` ), fileName:'USER_PRATILIPI/VOTE',
       sortBy:'VOTE_ID', minValue:'0',
       batchSize:1000, minUpdate:1000,
       timeInt:900, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:1000000 },
    COMMENT:{
-      kind:'COMMENT', schema:require( `./schema/COMMENT.js` ), fileName:'COMMENT',
+      kind:'COMMENT', schema:require( `./schema/COMMENT.js` ), fileName:'USER_PRATILIPI/COMMENT',
       sortBy:'COMMENT_ID', minValue:1,
       batchSize:1000, minUpdate:1000,
       timeInt:900, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:1000000 }
