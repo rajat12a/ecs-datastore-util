@@ -105,6 +105,7 @@ class BigqueryArchive {
       } else {
         this.config.lastValue = new Date(entities[ entities.length -1 ][ this.config.sortBy ]);
         console.log( `${ this.kind }: ${ rows.length } records inserted !` );
+        this.config.batchSize = Math.min( this.config.batchSize + 25, 1000 );
         this.callback( null, rows.length );
       }
     });
