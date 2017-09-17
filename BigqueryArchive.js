@@ -98,6 +98,8 @@ class BigqueryArchive {
               }
             });
           });
+        } else if( err.message === 'Request payload size exceeds the limit: 10485760 bytes.') {
+          this.config.batchSize = Math.max( this.config.batchSize - 25, 1 );
         }
         this.callback( err, null );
       } else {
