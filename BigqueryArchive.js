@@ -3,8 +3,6 @@ const datastoreClient = require( './lib/DbUtility.js' );
 
 var bigquery;
 
-const http = require( 'http' );
-
 class BigqueryArchive {
 
   static init( config ) {

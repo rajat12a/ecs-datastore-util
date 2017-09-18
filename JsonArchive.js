@@ -1,6 +1,5 @@
 const fs = require( 'fs' );
 const readline = require( 'readline' );
-const http = require( 'http' );
 const time = require( 'time' );
 const AWS = require( 'aws-sdk' );
 
