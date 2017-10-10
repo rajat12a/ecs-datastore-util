@@ -1,4 +1,4 @@
-const JsonArchive = require( './JsonArchive-rating.js' );
+const JsonArchive = require( './JsonArchive-library.js' );
 
 const archiveConfig = {
    USER_PRATILIPI_LIBRARY:{
