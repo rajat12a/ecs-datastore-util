@@ -30,12 +30,7 @@ const archiveConfig = {
       kind:'PRATILIPI', schema:require( `./schema/PRATILIPI.js` ), fileName:'PRATILIPI',
       sortBy:'_TIMESTAMP_', minValue:new Date(0),
       batchSize:1000, minUpdate: 100,
-      timeInt:900, minTimeInt:300, maxTimeInt: 900, nextRun:0, boost: 100 },
-  USER_PRATILIPI_201709:{
-      kind:'USER_PRATILIPI', schema:require( `./schema/USER_PRATILIPI.js` ), fileName:'USER_PRATILIPI-2017.09',
-      sortBy:'_TIMESTAMP_', minValue:new Date(1504204200000), maxValue:new Date(1506796200000),
-      batchSize:1000, minUpdate:1000,
-      timeInt:900, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:100 }
+      timeInt:900, minTimeInt:300, maxTimeInt: 900, nextRun:0, boost: 100 }
 };
 
 const bigqueryConfig = {
