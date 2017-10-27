@@ -9,7 +9,8 @@
     "vc": "node --max_old_space_size=15360 server.js > vc 2>&1",
     "rating": "node --max_old_space_size=15360 server-rating.js > rating 2>&1",
     "review": "node --max_old_space_size=15360 server-review.js > review 2>&1",
-    "library": "node --max_old_space_size=15360 server-library.js > library 2>&1"
+    "library": "node --max_old_space_size=15360 server-library.js > library 2>&1",
+    "fcm-token": "node --max_old_space_size=15360 server-fcm-token.js > fcm-token 2>&1"
   },
   "dependencies": {
     "@google-cloud/datastore": "1.0.0",
