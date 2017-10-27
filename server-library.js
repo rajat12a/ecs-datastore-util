@@ -3,7 +3,7 @@ const JsonArchive = require( './JsonArchive-library.js' );
 const archiveConfig = {
    USER_PRATILIPI_LIBRARY:{
     kind:'USER_PRATILIPI', schema:require( `./schema/USER_PRATILIPI.js` ), fileName:'USER_PRATILIPI/USER_PRATILIPI_LIBRARY',
-      sortBy:'USER_PRATILIPI_ID', minValue:'0',
+      sortBy:'USER_PRATILIPI_ID',
       batchSize:1000, minUpdate:1000,
       timeInt:900, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:1000000 }
 };
@@ -20,7 +20,7 @@ for( var i = 0; i < archives.length; i++ ) {
         console.log(`RUN: complete`);
       }
     };
-    if( archive === 'USER_AUTHOR' || archive === 'USER_PRATILIPI' ) {
+    if( archive === 'USER_AUTHOR' || archive === 'USER_PRATILIPI' || archive === 'USER_PRATILIPI_LIBRARY') {
       for( var j = 40; j < 80; j++ ) {
         var configSplit = JSON.parse(JSON.stringify(config));
         configSplit.minValue = "" + j;
