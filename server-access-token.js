@@ -20,7 +20,7 @@ for( var i = 0; i < archives.length; i++ ) {
         console.log(`RUN: complete`);
       }
     };
-    if( archive === 'USER_AUTHOR' || archive === 'USER_PRATILIPI' || archive === 'ACCESS_TOKEN' ) {
+    if( archive === 'USER_AUTHOR' || archive === 'USER_PRATILIPI' ) {
       for( var j = 40; j < 80; j++ ) {
         var configSplit = JSON.parse(JSON.stringify(config));
         configSplit.minValue = "" + j;

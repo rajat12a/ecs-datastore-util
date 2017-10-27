@@ -27,10 +27,10 @@ class JsonArchive {
     var filter = [];
 
     // filter.push([ "FCM_TOKEN", '>', null ]);
-   filter.push([ this.config.sortBy, '>', this.config.minValue ]);
-   if( this.config.maxValue != null ) {
-     filter.push([ this.config.sortBy, '<', this.config.maxValue ]);
-   }
+//   filter.push([ this.config.sortBy, '>', this.config.minValue ]);
+//   if( this.config.maxValue != null ) {
+//     filter.push([ this.config.sortBy, '<', this.config.maxValue ]);
+//   }
     this.datastore.query( filter, null, this.cursor, this.config.batchSize, null, null ).then( ( updates ) => {
       console.log( `${ this.archive }: Found ${ updates.data.length } new additions/updations.` );
       if( updates.data.length < 1 ) {
@@ -38,9 +38,9 @@ class JsonArchive {
       } else {
         this.cursor = updates.endCursor;
         updates.data.forEach( ( json ) => {
-         if( this.config.minValue < json[ this.config.sortBy ] ) {
-           this.config.minValue = json[ this.config.sortBy ];
-         }
+//         if( this.config.minValue < json[ this.config.sortBy ] ) {
+//           this.config.minValue = json[ this.config.sortBy ];
+//         }
           entities[ json[ this.config.schema.primaryKey ] ] = json;
         });
         this.writeToFile( entities, updates.data.length );
