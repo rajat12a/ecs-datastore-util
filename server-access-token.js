@@ -1,9 +1,9 @@
-const JsonArchive = require( './JsonArchive-fcm-token.js' );
+const JsonArchive = require( './JsonArchive-access-token.js' );
 
 const archiveConfig = {
-   ACCESS_TOKEN_FCM_TOKEN:{
+   ACCESS_TOKEN:{
     kind:'ACCESS_TOKEN', schema:require( `./schema/ACCESS_TOKEN.js` ), fileName:'ACCESS_TOKEN/ACCESS_TOKEN_FCM_TOKEN',
-      sortBy:'ACCESS_TOKEN_ID', minValue:'0',
+      sortBy:'ACCESS_TOKEN_ID',
       batchSize:1000, minUpdate:1000,
       timeInt:900, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:1000000 }
 };
@@ -20,7 +20,7 @@ for( var i = 0; i < archives.length; i++ ) {
         console.log(`RUN: complete`);
       }
     };
-    if( archive === 'USER_AUTHOR' || archive === 'USER_PRATILIPI' ) {
+    if( archive === 'USER_AUTHOR' || archive === 'USER_PRATILIPI' || archive === 'ACCESS_TOKEN' ) {
       for( var j = 40; j < 80; j++ ) {
         var configSplit = JSON.parse(JSON.stringify(config));
         configSplit.minValue = "" + j;
