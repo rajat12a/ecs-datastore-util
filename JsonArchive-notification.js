@@ -26,7 +26,7 @@ class JsonArchive {
     console.log(`${this.archive}: Querying.`);
     var filter = [];
 
-   filter.push([ this.config.sortBy, '>', this.config.minValue ]);
+   filter.push([ this.config.sortBy, '>=', this.config.minValue ]);
    if( this.config.maxValue != null ) {
      filter.push([ this.config.sortBy, '<', this.config.maxValue ]);
    }
