@@ -3,7 +3,7 @@ const JsonArchive = require( './JsonArchive-notification.js' );
 const archiveConfig = {
    NOTIFICATION:{
     kind:'NOTIFICATION', schema:require( `./schema/NOTIFICATION.js` ), fileName:'NOTIFICATION/NOTIFICATION',
-      sortBy:'CREATION_DATE', minValue:new Date(1506756281749),
+      sortBy:'CREATION_DATE', minValue:(new Date(1509300000000)),
       batchSize:1000, minUpdate:1000,
       timeInt:900, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:1000000 }
 };
@@ -12,7 +12,7 @@ var archives = Object.keys( archiveConfig );
 for( var i = 0; i < archives.length; i++ ) {
   (function run() {
     var archive = archives[ i ];
-    var config = JSON.parse(JSON.stringify(archiveConfig[ archive ]));
+    var config = archiveConfig[ archive ];
     var callback = ( err, updateCount ) => {
       if( err ) {
         console.error( "RUN: " + String( err ) );
