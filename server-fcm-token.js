@@ -2,7 +2,7 @@ const JsonArchive = require( './JsonArchive-fcm-token.js' );
 
 const archiveConfig = {
    ACCESS_TOKEN_FCM_TOKEN:{
-    kind:'ACCESS_TOKEN', schema:require( `./schema/ACCESS_TOKEN.js` ), fileName:'ACCESS_TOKEN/ACCESS_TOKEN_FCM_TOKEN',
+    kind:'ACCESS_TOKEN', schema:require( `./schema/ACCESS_TOKEN.js` ), fileName:'NOTIFICATION/ACCESS_TOKEN_FCM_TOKEN',
       sortBy:'ACCESS_TOKEN_ID', minValue:'0',
       batchSize:1000, minUpdate:1000,
       timeInt:900, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:1000000 }
