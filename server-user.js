@@ -3,7 +3,7 @@ const JsonArchive = require( './JsonArchive-user.js' );
 const archiveConfig = {
    USER:{
       kind:'USER', schema:require( `./schema/USER.js` ), fileName:'USER/USER',
-      sortBy:'USER_ID', minValue:1,
+      sortBy:'USER_ID',
       batchSize:1000, minUpdate:1000,
       timeInt:900, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:1000000 }
 };
@@ -20,11 +20,11 @@ for( var i = 0; i < archives.length; i++ ) {
         console.log(`RUN: complete`);
       }
     };
-    if( archive === 'USER_AUTHOR' || archive === 'USER_PRATILIPI' ) {
-      for( var j = 40; j < 80; j++ ) {
+    if( archive === 'USER_AUTHOR' || archive === 'USER_PRATILIPI' || archive === 'USER' ) {
+      for( var j = 4500000000000000; j < 9000000000000000; j+=500000000000000 ) {
         var configSplit = JSON.parse(JSON.stringify(config));
-        configSplit.minValue = "" + j;
-        configSplit.maxValue = "" + ( j + 1 );
+        configSplit.minValue = j;
+        configSplit.maxValue = ( j + 500000000000000 );
         configSplit.fileName = configSplit.fileName + `_${configSplit.minValue}_${configSplit.maxValue}`;
         var jsonArchive = new JsonArchive();
         console.log(`${archive + '_' + configSplit.minValue + '_' + configSplit.maxValue}: Taking Backup`);
