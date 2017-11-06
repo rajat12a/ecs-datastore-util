@@ -3,7 +3,7 @@ const JsonArchive = require( './JsonArchive-user.js' );
 const archiveConfig = {
    USER:{
       kind:'USER', schema:require( `./schema/USER.js` ), fileName:'USER/USER',
-      sortBy:'USER_ID', minValue:0,
+      sortBy:'USER_ID', minValue:1,
       batchSize:1000, minUpdate:1000,
       timeInt:900, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:1000000 }
 };
