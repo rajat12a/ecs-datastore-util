@@ -3,7 +3,7 @@ const JsonArchive = require( './JsonArchive-notification.js' );
 const archiveConfig = {
    NOTIFICATION:{
     kind:'NOTIFICATION', schema:require( `./schema/NOTIFICATION.js` ), fileName:'NOTIFICATION/NOTIFICATION',
-      sortBy:'CREATION_DATE', minValue:(new Date(1508112000000)),
+      sortBy:'CREATION_DATE', minValue:(new Date(1511049600000)), maxValue: (new Date(1511481600000)),
       batchSize:1000, minUpdate:1000,
       timeInt:900, minTimeInt:300, maxTimeInt:3600, nextRun:0, boost:1000000 }
 };
