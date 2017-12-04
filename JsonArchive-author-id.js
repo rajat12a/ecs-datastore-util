@@ -71,8 +71,8 @@ class JsonArchive {
 
 	  
     Object.values( entities ).forEach( (json) => {
-      var str = JSON.parse( JSON.stringify(json) );
-      wStream.write( str );
+      var str = JSON.stringify( json );
+      wStream.write( str + '\n' );
     });
     wStream.on('error', (error) => {
       console.log(`${ this.archive }: error local file write. ${error}`);
