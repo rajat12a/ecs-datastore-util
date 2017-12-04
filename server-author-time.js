@@ -12,7 +12,7 @@ var archives = Object.keys( archiveConfig );
 for( var i = 0; i < archives.length; i++ ) {
   (function run() {
     var archive = archives[ i ];
-    var config = JSON.parse(JSON.stringify(archiveConfig[ archive ]));
+    var config = archiveConfig[ archive ];
     var callback = ( err, updateCount ) => {
       if( err ) {
         console.error( "RUN: " + String( err ) );
