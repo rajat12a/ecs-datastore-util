@@ -1,7 +1,7 @@
 const JsonArchive = require( './JsonArchive-author-id.js' );
 
 const archiveConfig = {
-   AUTHOR:{
+   AUTHOR_ID:{
       kind:'AUTHOR', schema:require( `./schema/AUTHOR.js` ), fileName:'AUTHOR/AUTHOR_ID',
       sortBy:'AUTHOR_ID', minValue:0,
       batchSize:1000, minUpdate:1000,
