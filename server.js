@@ -49,7 +49,7 @@ const bigqueryConfig = {
 };
 
 
-(function run() {
+/* (function run() {
 
   var archives = Object.keys( archiveConfig );
   for( var i = 0; i < archives.length; i++ ) {
@@ -87,7 +87,7 @@ const bigqueryConfig = {
   console.log(`RUN: All Backups Complete. Starting again after 5 seconds`);
   setTimeout( run, 5 * 1000 );
 
-})();
+})(); */
 
 
 ( function bigQueryRun() {
