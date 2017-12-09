@@ -10,7 +10,7 @@ config.devo = {
 config.gamma = {
   'STORAGE_PROJECT': 'pratilipi-157910',
   'STORAGE_BUCKET': 'datastore-archive',
-  'BIGQUERY_PROJECT': 'pratilipi-157910',
+  'BIGQUERY_PROJECT': 'pratilipi-188506',
   'BIGQUERY_DATASET': 'Global'
 };
 
