@@ -17,6 +17,7 @@
     "author-id": "node --max_old_space_size=15360 server-author-id.js > author-id 2>&1",
     "author": "node --max_old_space_size=15360 server-author.js > author 2>&1",
     "notification": "node --max_old_space_size=15360 server-notification.js > notification 2>&1",
+    "page-blog-post": "node --max_old_space_size=15360 server-page-blog-post.js > page-blog-post 2>&1",
     "blog-post": "node --max_old_space_size=15360 server-blog-post.js > blog-post 2>&1"
   },
   "dependencies": {
