@@ -26,8 +26,8 @@ class JsonArchive {
     console.log(`${this.archive}: Querying.`);
     var filter = [];
 
-//    filter.push([ "REVIEW_DATE", '>', null ]);
-    filter.push([ this.config.sortBy, '>', this.config.minValue ]);
+    filter.push([ "CREATION_DATE", '>', new Date(1523750400000) ]);
+    // filter.push([ this.config.sortBy, '>', this.config.minValue ]);
     if( this.config.maxValue != null ) {
       filter.push([ this.config.sortBy, '<', this.config.maxValue ]);
     }
@@ -36,7 +36,7 @@ class JsonArchive {
       if( updates.data.length < 1 ) {
         this.callback( null, updates.data.length );
       } else {
-//	this.cursor = updates.endCursor;
+	      this.cursor = updates.endCursor;
         updates.data.forEach( ( json ) => {
           if( this.config.minValue < json[ this.config.sortBy ] ) {
             this.config.minValue = json[ this.config.sortBy ];
