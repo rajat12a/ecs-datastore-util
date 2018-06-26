@@ -26,7 +26,7 @@ class JsonArchive {
     console.log(`${this.archive}: Querying.`);
     var filter = [];
 
-    filter.push([ "CREATION_DATE", '>', new Date(1523750400000) ]);
+    filter.push([ "CREATION_DATE", '>', new Date(1525737600000) ]);
     // filter.push([ this.config.sortBy, '>', this.config.minValue ]);
     if( this.config.maxValue != null ) {
       filter.push([ this.config.sortBy, '<', this.config.maxValue ]);
